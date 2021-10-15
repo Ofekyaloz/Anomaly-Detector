@@ -3,4 +3,4 @@ project(The_Best_Project)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(The_Best_Project main.cpp)
+add_executable(The_Best_Project main.cpp cmake-build-debug/anomaly_detection_util.cpp cmake-build-debug/anomaly_detection_util.h)
