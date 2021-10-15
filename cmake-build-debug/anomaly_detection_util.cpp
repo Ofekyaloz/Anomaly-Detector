@@ -33,5 +33,22 @@ float avg(float* x, int size){
 }
 
 float pearson(float* x, float* y, int size) {
-    return cov(x, y, size) / sqrt(var(x, size)) * sqrt(var(y, size));
+    return cov(x, y, size) / (sqrt(var(x, size)) * sqrt(var(y, size)));
 }
+
+Line linear_reg(Point** points, int size){
+    float x[size], y[size];
+
+    for(int i = 0; i < size; i++){
+        x[i] = points[i]->x;
+        y[i] = points[i]->y;
+    }
+
+    float a = cov(x, y, size) / var(x, size);
+    float b = avg(y, size) - a * avg(x, size);
+    return Line(a, b);
+
+}
+
+
+
