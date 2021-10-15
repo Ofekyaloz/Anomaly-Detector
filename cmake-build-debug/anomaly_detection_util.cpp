@@ -4,24 +4,30 @@
 
 #include "anomaly_detection_util.h"
 
+float avg(float* x, int size){
+    int sum = 0;
+    for(int i = 0; i < size; i++){
+        sum += x[i];
+    }
+    return sum / size;
+}
+
 float var(float* x, int size) {
-    float avg = 0, sum = 0;
+    float sum = 0;
 
     for(int i = 0; i < size; i++){
-        avg += x[i];
         sum += x[i] * x[i];
     }
-    avg /= size;
-    sum /= size;
-
-    return sum - avg * avg;
+    float miu = avg(x, size);
+    return sum / size - miu * miu;
 }
 
 float cov(float* x, float* y, int size){
-    float avgX = 0, avgY = 0;
+    float sum = 0;
 
     for(int i = 0; i < size; i++){
-        avgX += x[i];
-        avgY += x[i];
+        sum += x[i] * y[i];
     }
+
+    return sum / size - avg(x, size) * avg(y, size);
 }

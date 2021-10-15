@@ -4,6 +4,10 @@
 
 #ifndef THE_BEST_PROJECT_ANOMALY_DETECTION_UTIL_H
 #define THE_BEST_PROJECT_ANOMALY_DETECTION_UTIL_H
+
+// returns the average of the array
+float avg(float* x, int size);
+
 // returns the variance of X and Y
 float var(float* x, int size);
 
