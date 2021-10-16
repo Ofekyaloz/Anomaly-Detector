@@ -1,6 +1,8 @@
-//
-// Created by Gili and Ofek on 15/10/2021.
-//
+/*
+ * animaly_detection_util.cpp
+ *
+ * Author: Gili Gutfeld - 209284512
+ */
 
 #include "anomaly_detection_util.h"
 #include <math.h>
