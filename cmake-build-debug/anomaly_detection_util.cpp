@@ -12,13 +12,11 @@ float var(float* x, int size) {
     for(int i = 0; i < size; i++){
         sum += x[i] * x[i];
     }
-
     return sum / size - miu * miu;
 }
 
 float cov(float* x, float* y, int size){
     float sum = 0;
-
     for(int i = 0; i < size; i++){
         sum += x[i] * y[i];
     }
@@ -39,12 +37,10 @@ float pearson(float* x, float* y, int size) {
 
 Line linear_reg(Point** points, int size){
     float x[size], y[size];
-
     for(int i = 0; i < size; i++){
         x[i] = points[i]->x;
         y[i] = points[i]->y;
     }
-
     float a = cov(x, y, size) / var(x, size);
     float b = avg(y, size) - a * avg(x, size);
     return Line(a, b);
