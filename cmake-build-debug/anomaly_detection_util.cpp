@@ -8,6 +8,9 @@
 #include <math.h>
 
 float var(float* x, int size) {
+    if (size == 0 || x == nullptr) {
+        return -1;
+    }
     float sum = 0, miu = avg(x, size);
     for(int i = 0; i < size; i++){
         sum += x[i] * x[i];
@@ -16,6 +19,9 @@ float var(float* x, int size) {
 }
 
 float cov(float* x, float* y, int size){
+    if (size == 0 || x == nullptr || y == nullptr) {
+        return -1;
+    }
     float sum = 0;
     for(int i = 0; i < size; i++){
         sum += x[i] * y[i];
@@ -24,6 +30,9 @@ float cov(float* x, float* y, int size){
 }
 
 float avg(float* x, int size){
+    if (size == 0 || x == nullptr) {
+        return -1;
+    }
     int sum = 0;
     for(int i = 0; i < size; i++){
         sum += x[i];
@@ -32,10 +41,16 @@ float avg(float* x, int size){
 }
 
 float pearson(float* x, float* y, int size) {
+    if (size == 0 || x == nullptr || y == nullptr) {
+        return -1;
+    }
     return cov(x, y, size) / (sqrt(var(x, size)) * sqrt(var(y, size)));
 }
 
 Line linear_reg(Point** points, int size){
+    if (size == 0 || points == nullptr) {
+        return nullptr;
+    }
     float x[size], y[size];
     for(int i = 0; i < size; i++){
         x[i] = points[i]->x;
@@ -47,9 +62,12 @@ Line linear_reg(Point** points, int size){
 }
 
 float dev(Point p,Point** points, int size) {
+    if (size == 0 || points == nullptr) {
+        return -1;
+    }
     return dev(p, linear_reg(points, size));
 }
 
 float dev(Point p,Line l) {
-    return abs((p.y - l.f(p.x)));
+    return ((p.y - l.f(p.x)));
 }
