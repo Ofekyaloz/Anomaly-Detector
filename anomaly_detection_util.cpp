@@ -7,6 +7,17 @@
 #include "anomaly_detection_util.h"
 #include <math.h>
 
+float avg(float* x, int size){
+    if (size == 0 || x == nullptr) {
+        return -1;
+    }
+    float sum = 0;
+    for(int i = 0; i < size; i++){
+        sum += x[i];
+    }
+    return sum / size;
+}
+
 float var(float* x, int size) {
     if (size == 0 || x == nullptr) {
         return -1;
@@ -29,17 +40,6 @@ float cov(float* x, float* y, int size){
     return sum / size - avg(x, size) * avg(y, size);
 }
 
-float avg(float* x, int size){
-    if (size == 0 || x == nullptr) {
-        return -1;
-    }
-    int sum = 0;
-    for(int i = 0; i < size; i++){
-        sum += x[i];
-    }
-    return sum / size;
-}
-
 float pearson(float* x, float* y, int size) {
     if (size == 0 || x == nullptr || y == nullptr) {
         return -1;
@@ -48,9 +48,6 @@ float pearson(float* x, float* y, int size) {
 }
 
 Line linear_reg(Point** points, int size){
-    if (size == 0 || points == nullptr) {
-        return nullptr;
-    }
     float x[size], y[size];
     for(int i = 0; i < size; i++){
         x[i] = points[i]->x;
@@ -69,5 +66,5 @@ float dev(Point p,Point** points, int size) {
 }
 
 float dev(Point p,Line l) {
-    return ((p.y - l.f(p.x)));
+    return abs(p.y - l.f(p.x));
 }
