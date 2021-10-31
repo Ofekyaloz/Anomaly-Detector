@@ -12,7 +12,6 @@ public:
     TimeSeries(const char* CSVfileName){
         bool new_line = False;
         char* str = CSVfileName;
-        str.co
         while (str != NULL)
         {
             if (!new_line && str.find('\n')) {
