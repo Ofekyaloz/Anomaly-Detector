@@ -1,10 +1,9 @@
-
 #include <iostream>
 #include <map>
 #include <vector>
 #include "anomaly_detection_util.h"
-
-using namespace std;
+#include "timeseries.h"
+#include <string.h>
 
 bool wrong(float val, float expected){
     return val<expected-0.001 || val>expected+0.001;
@@ -12,11 +11,25 @@ bool wrong(float val, float expected){
 
 // this is a simple test to put you on the right track
 int main(){
-    const int N=10;
-    float x[]={1,2,3,4,5,6,7,8,9,10};
-    float y[]={2.1,4.2,6.1,8.1,10.3,12.2,14.4,16.1,18.2,20.3};
 
-    map<string, vector<float>> map;
+
+    const char* CSVfileName = "time,speed,angel,height\\n0.1,20,30,40\\n0.2,30,40,50\\n0.3,40,50,60\\n0.4,50,60,70";
+    TimeSeries* p = new TimeSeries(CSVfileName);
+    TimeSeries
+    Map<string, vector<float>> m;
+    bool new_line = false;
+    string* str = (string *) CSVfileName;
+    string sub;
+    while (str != NULL)
+    {
+        if (!new_line && str->find('\n')) {
+            break;
+        }
+        else if (!new_line) {
+            sub = strtok(NULL, ",");
+            map[sub] = vector<float>();
+        }
+    }
 
 
 
