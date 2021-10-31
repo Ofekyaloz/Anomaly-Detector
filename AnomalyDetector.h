@@ -1,4 +1,7 @@
-class TimeSeries{ /*...*/};
+class TimeSeries{
+
+
+    /*...*/};
 class AnomalyReport{
 public:
     const string description;

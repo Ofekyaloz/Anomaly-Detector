@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <map>
 #include "anomaly_detection_util.h"
 
 using namespace std;
@@ -13,6 +14,7 @@ int main(){
     const int N=10;
     float x[]={1,2,3,4,5,6,7,8,9,10};
     float y[]={2.1,4.2,6.1,8.1,10.3,12.2,14.4,16.1,18.2,20.3};
+    map<string, float[]> map = {{"Time", }};
 
     Point* ps[N];
     for(int i=0;i<N;i++)
