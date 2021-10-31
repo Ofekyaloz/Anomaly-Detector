@@ -49,6 +49,9 @@ float pearson(float* x, float* y, int size) {
 }
 
 Line linear_reg(Point** points, int size) {
+    if (size == 0 || points == nullptr) {
+        return Line(0,0);
+    }
     float x[size], y[size];
     for (int i = 0; i < size; i++) {
         x[i] = points[i]->x;
@@ -60,6 +63,9 @@ Line linear_reg(Point** points, int size) {
 }
 
 float dev(Point p,Point** points, int size) {
+    if (size == 0 || points == nullptr) {
+        return -1;
+    }
     return dev(p, linear_reg(points, size));
 }
 
