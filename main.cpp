@@ -29,11 +29,7 @@ int main() {
             map[sub] = vector<float>();
         }
     }
-
-
-
-
-
+    int N = 2;
     Point* ps[N];
     for(int i=0;i<N;i++)
         ps[i]=new Point(x[i],y[i]);
