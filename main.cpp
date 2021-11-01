@@ -1,9 +1,6 @@
 
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include "anomaly_detection_util.h"
-#include "timeseries.h"
+#include "testTimeSeries.h"
 
 using namespace std;
 
@@ -13,7 +10,7 @@ bool wrong(float val, float expected){
 
 // this is a simple test to put you on the right track
 int main(){
-    TimeSeries("csv_table.txt");
+    finalTest();
 
 
 

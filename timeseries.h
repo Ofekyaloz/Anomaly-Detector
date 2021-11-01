@@ -6,69 +6,53 @@
 #include <stdexcept>
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 
 class TimeSeries {
     vector<pair<string, vector<float>>> table;
 
-
 public:
-    // Reads a CSV file into a vector of <string, vector<int>> pairs where
-    // each pair represents <column name, column values>
-    TimeSeries(const char *CSVfileName) {
+    // The function reads a CSV file into a vector of pairs of subjects and their vectors
+    TimeSeries(const char* fileName) {
 
-        // Create a vector of <string, int vector> pairs to store the result
+        // Create an input filestream and check the file is open
+        ifstream csv(fileName);
+        if (!csv.is_open()) throw std::runtime_error("Cant open the file");
 
-        // Create an input filestream
-        ifstream myFile(CSVfileName);
-
-        // Make sure the file is open
-        if (!myFile.is_open()) throw std::runtime_error("Cant open the file");
-
-        // Helper vars
         string subjects, column, line;
-        int val;
+        float val;
 
-        // Read the column names
-        if (myFile.good()) {
-            // Extract the first line in the file
-            getline(myFile, subjects);
-
-            // Create a string stream from line
+        // Read the subjects of the columns
+        if (csv.good()) {
+            // Get the first line in the file and create a string stream from the line
+            getline(csv, subjects);
             stringstream ss(subjects);
 
-            // Extract each column name
-            while (std::getline(ss, column, ',')) {
-
-                // Initialize and add <colname, int vector> pairs to result
+            // Get each column subject and insert a pair of its name and an empty vector
+            while (getline(ss, column, ',')) {
                 this->table.push_back({column, vector<float>{}});
             }
         }
 
-        // Read data, line by line
-        while (std::getline(myFile, line)) {
-            // Create a string stream of the current line
-            std::stringstream ss(line);
+        // Read values from the other lines
+        while (getline(csv, line)) {
+            stringstream ss(line);
+            int count = 0;
 
-            // Keep track of the current column index
-            int colIdx = 0;
-
-            // Extract each integer
+            // Get every value in the line
             while (ss >> val) {
 
-                // Add the current integer to the 'colIdx' column's values vector
-                table.at(colIdx).second.push_back(val);
+                // Add the current value to the current column's vector
+                table.at(count).second.push_back(val);
 
-                // If the next token is a comma, ignore it and move on
+                // Check the next token is not a comma, otherwise ignore it and increment the counter
                 if (ss.peek() == ',') ss.ignore();
-
-                // Increment the column index
-                colIdx++;
+                count++;
             }
         }
-        // Close file
-        myFile.close();
+        csv.close(); // Close the file
     }
 
     int getRowSize() {
@@ -79,7 +63,7 @@ public:
         return this->table[0].second.size();
     }
 
-    vector<float> getRow(int i) {
+    vector<float> getCol(int i) {
         return this->table[i].second;
     }
 
