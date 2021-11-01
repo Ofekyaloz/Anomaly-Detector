@@ -1,32 +1,29 @@
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_
 #include <string.h>
+#include <iostream>
 
 using namespace std;
 
-class TimeSeries{
+class TimeSeries {
     map<string, vector<float>> map;
     vector<string> subj;
 
-
 public:
-    TimeSeries(const char* CSVfileName){
-        map<string, vector<float>> map;
+    TimeSeries(const char *CSVfileName) {
         bool new_line = false;
-        string* str = (string *) CSVfileName;
+        string *str = (string *) CSVfileName;
         string sub;
-        while (str != NULL)
-        {
+        while (str != NULL) {
             if (!new_line && str->find('\n')) {
                 break;
-            }
-            else if (!new_line) {
+            } else if (!new_line) {
                 sub = strtok(NULL, ",");
                 this->map[sub] = vector<float>();
             }
         }
+    }
 };
-
 
 
 #endif /* TIMESERIES_H_ */
