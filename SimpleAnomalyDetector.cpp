@@ -1,4 +1,6 @@
 #include "SimpleAnomalyDetector.h"
+#include "anomaly_detection_util.h"
+
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
@@ -29,7 +31,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
             vector<float> v1 = ts.getCol(i), v2 = ts.getCol(j);
             for (int h = 0; h < colSize; h++)
                 ps[h]=new Point(v1[h], v2[h]);
-            correlatedFeatures correlatedFeatures(ts.getRowSubject(i), ts.getRowSubject(j), m, lin_reg(ps, colSize), treshold);
+            correlatedFeatures correlatedFeatures(ts.getRowSubject(i), ts.getRowSubject(j), m, linear_reg(ps, colSize), treshold);
             correlated.push_back(correlateFeatures);
         }
     }
