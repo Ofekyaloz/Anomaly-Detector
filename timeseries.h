@@ -5,7 +5,7 @@ using namespace std;
 
 class TimeSeries{
 
-public:
+public
     TimeSeries(const char* CSVfileName){
         int getRowSize() const;
         int getColSize() const;

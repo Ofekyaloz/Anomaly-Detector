@@ -1,5 +1,7 @@
 #include "SimpleAnomalyDetector.h"
 #include "anomaly_detection_util.h"
+#include "timeseries.h"
+#include "AnomalyDetector.h"
 
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
