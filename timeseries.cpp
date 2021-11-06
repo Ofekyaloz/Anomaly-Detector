@@ -1,6 +1,5 @@
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_
-#include "timeseries.h"
 #include <vector>
 #include <string>
 #include <stdexcept>
