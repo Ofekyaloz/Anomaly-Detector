@@ -20,23 +20,25 @@ public:
     virtual ~SimpleAnomalyDetector();
 
     virtual void learnNormal(const TimeSeries& ts) {
-        int i,j, colSize = ts.getcolSize(), rowSize = ts.getRowSize;
+        int i,j, colSize = ts.getColSize();
         float treshold = 0.9;
         for (int i = 0; i < colSize; i++) {
             int m = 0, c = -1;
             for (int j = i + 1; j < colSize; j++ ) {
-                float p = pearson(ts.getCol(i), ts.getCol(j), rowSize);
+                float* f = &ts.getCol(i)[0];
+                float* g = &ts.getCol(j)[0];
+                float p = pearson(f, g, colSize);
                 if (p > m) {
                     m = p;
                     c = j;
                 }
             }
             if (c != -1) {
-                Point* ps[rowsSize];
-                std::vector v1 = ts.getCol(i), v2 = ts.getCol(j);
-                for (int h = 0; h < rowsSize; h++)
+                Point* ps[colSize];
+                vector<float> v1 = ts.getCol(i), v2 = ts.getCol(j);
+                for (int h = 0; h < colSize; h++)
                     ps[h]=new Point(v1[h], v2[h]);
-                correlatedFeatures correlatedFeatures(ts.getRowSubject(i), ts.getRowSubject(j), m, lin_reg(ps, rowsSize), treshold);
+                correlatedFeatures correlatedFeatures(ts.getRowSubject(i), ts.getRowSubject(j), m, lin_reg(ps, colSize), treshold);
                 correlated.push_back(correlateFeatures);
             }
         }
@@ -44,16 +46,14 @@ public:
         for (i = 0; i < corlen; i++) {
             vector<float> v1 = ts.getCol(correlated[i].feature1), v2 = ts.getCol(correlated[i].feature2);
             float max = 0;
-            for (j = 0; j < rowSize; j++) {
+            for (j = 0; j < colSize; j++) {
                 Point p = new Point(v1[j], v2[j]);
-                float dis = dev(p, correlated[i].lin_reg)
+                float dis = dev(p, correlated[i].lin_reg);
                 if (dis > max)
                     max = dis;
             }
             distance.push_back(max);
-
         }
-
     }
 
     virtual std::vector<AnomalyReport> detect(const TimeSeries& ts);

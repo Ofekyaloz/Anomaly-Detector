@@ -55,19 +55,20 @@ public:
         csv.close(); // Close the file
     }
 
-    int getRowSize() {
+    int getRowSize() const {
         return this->table.size();
     }
 
-    int getColSize() {
+    int getColSize() const {
         return this->table[0].second.size();
     }
 
-    vector<float> getCol(int i) {
-        return this->table[i].second;
+    vector<float> getCol(int i) const{
+        vector<float> v = this->table[i].second;
+        return v;
     }
 
-    string getRowSubject(int i) {
+    string getRowSubject(int i) const {
         return this->table[i].first;
     }
 

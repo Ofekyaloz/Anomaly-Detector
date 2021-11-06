@@ -1,8 +1,8 @@
 class TimeSeries{
-    int getRowSize();
-    int getColSize();
+    int getRowSize() const;
+    int getColSize() const;
     vector<float> getCol(int i);
-    string getRowSubject(int i);
+    string getRowSubject(int i) const;
     };
 
 class AnomalyReport{

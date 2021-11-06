@@ -6,7 +6,7 @@
 #include "SimpleAnomalyDetector.h"
 #include <string.h>
 
-
+//font 13
 int main() {
     TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project");
 //    finalTest();
