@@ -67,6 +67,17 @@ public:
         return v;
     }
 
+    vector<float> getCol(string str) const {
+        int i, colSize = this->getColSize();
+        for (i = 0; i < colSize; ++i) {
+            if (str == this->getRowSubject(i)) {
+                break;
+            }
+        }
+        vector<float> v = this->getCol(i);
+        return v;
+    }
+
     string getRowSubject(int i) const {
         return this->table[i].first;
     }

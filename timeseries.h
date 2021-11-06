@@ -15,6 +15,7 @@ public:
     int getColSize() const;
     vector<float> getCol(int i) const;
     string getRowSubject(int i) const;
-};
+    vector<float> getCol(string str) const;
+    };
 
 #endif /* TIMESERIES_H_ */

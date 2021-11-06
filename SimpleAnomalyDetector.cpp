@@ -34,17 +34,23 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
             vector<float> v1 = ts.getCol(i), v2 = ts.getCol(j);
             for (int h = 0; h < colSize; h++)
                 ps[h]=new Point(v1[h], v2[h]);
-            correlatedFeatures coreelated (ts.getRowSubject(i), ts.getRowSubject(j), m, linear_reg(ps, colSize), treshold);
-            correlated.push_back(correlateFeatures);
+            correlatedFeatures features;
+            features.feature1=ts.getRowSubject(i);
+            features.feature2=ts.getRowSubject(j);
+            features.corrlation=m;
+            features.lin_reg = linear_reg(ps, colSize);
+            features.threshold = treshold;
+            correlated.push_back(features);
         }
     }
     int corlen = correlated.size();
-    for (i = 0; i < corlen; i++) {
+    vector<float> distance;
+    for (int i = 0; i < corlen; i++) {
         vector<float> v1 = ts.getCol(correlated[i].feature1), v2 = ts.getCol(correlated[i].feature2);
         float max = 0;
         for (j = 0; j < colSize; j++) {
-            Point p = new Point(v1[j], v2[j]);
-            float dis = dev(p, correlated[i].lin_reg);
+            Point *p = new Point(v1[j], v2[j]);
+            float dis = dev(*p, correlated[i].lin_reg);
             if (dis > max)
                 max = dis;
         }
