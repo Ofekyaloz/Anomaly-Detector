@@ -18,6 +18,8 @@ struct correlatedFeatures{
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
     vector<correlatedFeatures> cf;
+    vector<float> distance;
+
 public:
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();

@@ -4,21 +4,18 @@
 #include "AnomalyDetector.h"
 
 
-SimpleAnomalyDetector::SimpleAnomalyDetector() {
+//SimpleAnomalyDetector::SimpleAnomalyDetector() {
+//}
 
-
-}
-
-SimpleAnomalyDetector::~SimpleAnomalyDetector() {
-
-}
+//SimpleAnomalyDetector::~SimpleAnomalyDetector() {
+//
+//}
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
-    int i,j, colSize = ts.getColSize();
-    vector<correlatedFeatures> correlated;
+    int i ,j, colSize = ts.getColSize();
     float treshold = 0.9;
-    for (int i = 0; i < colSize; i++) {
+    for (i = 0; i < colSize; i++) {
         int m = 0, c = -1;
         for (int j = i + 1; j < colSize; j++ ) {
             float* f = &ts.getCol(i)[0];
@@ -40,17 +37,16 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
             features.corrlation=m;
             features.lin_reg = linear_reg(ps, colSize);
             features.threshold = treshold;
-            correlated.push_back(features);
+            cf.push_back(features);
         }
     }
-    int corlen = correlated.size();
-    vector<float> distance;
-    for (int i = 0; i < corlen; i++) {
-        vector<float> v1 = ts.getCol(correlated[i].feature1), v2 = ts.getCol(correlated[i].feature2);
+    int corlen = cf.size();
+    for (i = 0; i < corlen; i++) {
+        vector<float> v1 = ts.getCol(cf[i].feature1), v2 = ts.getCol(cf[i].feature2);
         float max = 0;
         for (j = 0; j < colSize; j++) {
             Point *p = new Point(v1[j], v2[j]);
-            float dis = dev(*p, correlated[i].lin_reg);
+            float dis = dev(*p, cf[i].lin_reg);
             if (dis > max)
                 max = dis;
         }
@@ -58,6 +54,6 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     }
 }
 
-vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
-
-}
+//vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
+//
+//}
