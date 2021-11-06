@@ -7,10 +7,10 @@ class TimeSeries{
 
 public:
     TimeSeries(const char* CSVfileName){
-    int getRowSize() const;
-    int getColSize() const;
-    vector<float> getCol(int i);
-    string getRowSubject(int i) const;
+        int getRowSize() const;
+        int getColSize() const;
+        vector<float> getCol(int i);
+        string getRowSubject(int i) const;
     }
 };
 
