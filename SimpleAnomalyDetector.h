@@ -1,8 +1,8 @@
 #include <string.h>
 #include <vector>
-#include "../anomaly_detection_util.h"
-#include "../AnomalyDetector.h"
-#include "../timeseries.h"
+#include "AnomalyDetector.h"
+#include "anomaly_detection_util.h"
+#include "timeseries.h"
 
 struct correlatedFeatures{
     string feature1,feature2; // names of the correlated features
@@ -13,6 +13,7 @@ struct correlatedFeatures{
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
     std::vector<correlatedFeatures> correlated;
+    std::vector<float> distance;
 
 public:
     SimpleAnomalyDetector();
@@ -20,7 +21,7 @@ public:
 
     virtual void learnNormal(const TimeSeries& ts) {
         int i,j, colSize = ts.getcolSize(), rowSize = ts.getRowSize;
-        float treshold = 0.7;
+        float treshold = 0.9;
         for (int i = 0; i < colSize; i++) {
             int m = 0, c = -1;
             for (int j = i + 1; j < colSize; j++ ) {
@@ -40,16 +41,22 @@ public:
             }
         }
         int corlen = correlated.size();
-        for ( i = 0; i < corlen; ++i) {
-            for (j = 0; j < ; ++j) {
-                vector<float> v1 = ts.getCol(correlated[i].feature1), v2 = ts.getCol(correlated[i].feature2);
-
-
+        for (i = 0; i < corlen; i++) {
+            vector<float> v1 = ts.getCol(correlated[i].feature1), v2 = ts.getCol(correlated[i].feature2);
+            float max = 0;
+            for (j = 0; j < rowSize; j++) {
+                Point p = new Point(v1[j], v2[j]);
+                float dis = dev(p, correlated[i].lin_reg)
+                if (dis > max)
+                    max = dis;
             }
+            distance.push_back(max);
 
         }
 
     }
+
     virtual std::vector<AnomalyReport> detect(const TimeSeries& ts);
+
     std::vector<correlatedFeatures> getNormalModel();
 };

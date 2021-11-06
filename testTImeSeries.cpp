@@ -1,8 +1,9 @@
-#include "testTimeSeries.h"
+#include "testTImeSeries.h"
+#include "timeseries.h"
 #include <iostream>
 
 void finalTest() {
-    TimeSeries *t = new TimeSeries("/home/giligutfeld/CLionProjects/The_Best_Project/csv_table.txt");
+    TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project/text.txt");
     int count = 0;
     count += testColSize(*t);
     count += testRowSize(*t);
