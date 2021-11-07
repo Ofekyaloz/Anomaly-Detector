@@ -1,18 +1,18 @@
+#include "testTImeSeries.h"
+#include <map>
+#include <vector>
+#include "anomaly_detection_util.h"
+#include "timeseries.h"
+#include "SimpleAnomalyDetector.h"
+#include <string.h>
 
-#include <iostream>
-#include "testTimeSeries.h"
-
-using namespace std;
-
-bool wrong(float val, float expected){
-    return val<expected-0.001 || val>expected+0.001;
-}
-
-// this is a simple test to put you on the right track
-int main(){
+//font 13
+int main() {
+//    TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project");
+//   finalTest();
+//   printf("%s", t);
+//    SimpleAnomalyDetector simple;
+ //   simple.detect(*t);
     finalTest();
-
-
-
     return 0;
 }
