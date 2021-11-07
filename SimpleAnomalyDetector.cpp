@@ -3,13 +3,11 @@
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
-
 }
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 }
-
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
