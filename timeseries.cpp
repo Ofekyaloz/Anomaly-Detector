@@ -9,7 +9,7 @@
 #include "timeseries.h"
 
 // The function reads a CSV file into a vector of pairs of subjects and their vectors
-TimeSeries::TimeSeries (const char* fileName){
+TimeSeries::TimeSeries (const char* fileName) {
 
         // Create an input filestream and check the file is open
         ifstream csv(fileName);
