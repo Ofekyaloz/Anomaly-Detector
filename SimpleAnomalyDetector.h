@@ -15,7 +15,6 @@ struct correlatedFeatures{
     float threshold;
 };
 
-
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
     vector<correlatedFeatures> cf;
 public:

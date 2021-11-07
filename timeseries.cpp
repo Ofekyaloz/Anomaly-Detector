@@ -1,21 +1,15 @@
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_
-#include "timeseries.h"
 #include <vector>
 #include <string>
 #include <stdexcept>
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include "timeseries.h"
 
-using namespace std;
-
-class TimeSeries {
-    vector<pair<string, vector<float>>> table;
-
-public:
-    // The function reads a CSV file into a vector of pairs of subjects and their vectors
-    TimeSeries(const char* fileName) {
+// The function reads a CSV file into a vector of pairs of subjects and their vectors
+TimeSeries::TimeSeries (const char* fileName){
 
         // Create an input filestream and check the file is open
         ifstream csv(fileName);
@@ -32,7 +26,7 @@ public:
 
             // Get each column subject and insert a pair of its name and an empty vector
             while (getline(ss, column, ',')) {
-                this->table.push_back({column, vector<float>{}});
+                this->table.push_back({column, vector < float > {}});
             }
         }
 
@@ -55,24 +49,23 @@ public:
         csv.close(); // Close the file
     }
 
-    int getRowSize() const {
+    int TimeSeries::getRowSize() const {
         return this->table.size();
     }
 
-    int getColSize() const {
+    int TimeSeries::getColSize() const {
         return this->table[0].second.size();
     }
 
-    vector<float> getCol(int i) const{
+    vector<float> TimeSeries::getCol(int i) const {
         vector<float> v = this->table[i].second;
         return v;
     }
 
-    string getRowSubject(int i) const {
+    string TimeSeries::getRowSubject(int i) const {
         return this->table[i].first;
     }
 
-};
 
 
 #endif /* TIMESERIES_H_ */

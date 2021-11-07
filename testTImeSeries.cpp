@@ -3,7 +3,7 @@
 #include <iostream>
 
 void finalTest() {
-    TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project/text.txt");
+    TimeSeries *t = new TimeSeries("text.txt");
     int count = 0;
     count += testColSize(*t);
     count += testRowSize(*t);

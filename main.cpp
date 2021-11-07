@@ -8,12 +8,11 @@
 
 //font 13
 int main() {
-    TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project");
-//    finalTest();
-//    printf("%s", t);
-    SimpleAnomalyDetector simple;
-    simple.detect(*t);
-
-    cout << "hey" << endl;
+//    TimeSeries *t = new TimeSeries("/home/ofek/CLionProjects/The_Best_Project");
+//   finalTest();
+//   printf("%s", t);
+//    SimpleAnomalyDetector simple;
+ //   simple.detect(*t);
+    finalTest();
     return 0;
 }
