@@ -1,7 +1,6 @@
 #include "SimpleAnomalyDetector.h"
 #include "anomaly_detection_util.h"
 
-
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
 
 
