@@ -12,6 +12,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
     int colSize = ts.getColSize(), rowSize = ts.getRowSize();
+    // Hello world
     float max, distance, threshold = 0.9;
 
     for (int i = 0; i < rowSize; i++) {
