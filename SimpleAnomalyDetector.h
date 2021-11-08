@@ -1,3 +1,8 @@
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
+
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_
 

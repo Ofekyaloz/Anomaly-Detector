@@ -1,3 +1,8 @@
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
+
 #ifndef THE_BEST_PROJECT_ANOMALY_DETECTION_UTIL_H
 #define THE_BEST_PROJECT_ANOMALY_DETECTION_UTIL_H
 

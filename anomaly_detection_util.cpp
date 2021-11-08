@@ -1,6 +1,4 @@
 /*
- * animaly_detection_util.cpp
- *
  * Authors: Gili Gutfeld - 209284512
  * Ofek Yaloz - 206666729
  */

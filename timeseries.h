@@ -1,6 +1,7 @@
-//
-// Created by giligutfeld on 07/11/2021.
-//
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
 
 #ifndef THE_BEST_PROJECT_TIMESERIES_H
 #define THE_BEST_PROJECT_TIMESERIES_H

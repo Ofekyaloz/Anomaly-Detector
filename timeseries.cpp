@@ -1,3 +1,7 @@
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_
 #include <vector>

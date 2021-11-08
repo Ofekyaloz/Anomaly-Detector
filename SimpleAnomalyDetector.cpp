@@ -1,3 +1,8 @@
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
+
 #include "SimpleAnomalyDetector.h"
 #include "anomaly_detection_util.h"
 
