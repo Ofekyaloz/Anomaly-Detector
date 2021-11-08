@@ -5,6 +5,7 @@
 #include <vector>
 #include "timeseries.h"
 #include "math.h"
+
 using namespace std;
 
 class AnomalyReport{
