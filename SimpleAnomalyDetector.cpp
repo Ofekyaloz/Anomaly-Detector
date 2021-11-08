@@ -74,7 +74,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
 
     // Vector of the anomaly reports and count of rows and correlated features.
     vector<AnomalyReport> detects;
-    int rowCount = ts.getColSize(), cfSize = cf.size();
+    int rowCount = ts.getColSize();
 
     // A loop for the rows
     for (int i = 0; i < rowCount; i++) {
