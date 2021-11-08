@@ -1,3 +1,8 @@
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
+
 #ifndef ANOMALYDETECTOR_H_
 #define ANOMALYDETECTOR_H_
 
