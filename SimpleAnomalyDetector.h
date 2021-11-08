@@ -17,12 +17,10 @@ struct correlatedFeatures{
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
     vector<correlatedFeatures> cf;
-    vector<float> distance;
 
 public:
     SimpleAnomalyDetector();
     virtual ~SimpleAnomalyDetector();
-
     virtual void learnNormal(const TimeSeries& ts);
     virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 

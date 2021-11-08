@@ -30,7 +30,7 @@ int testRowSize(TimeSeries t) {
 }
 
 int testRowSubject(TimeSeries t) {
-    if(t.getRowSubject(1) != "Speed"){
+    if(t.getColSubject(1) != "Speed"){
         cout << "Test row subject failed!" << endl;
         return 1;
     }

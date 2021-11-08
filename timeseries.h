@@ -17,7 +17,8 @@ public:
     int getRowSize() const;
     int getColSize() const;
     vector<float> getCol(int i) const;
-    string getRowSubject(int i) const;
+    string getColSubject(int i) const;
+    const vector<float>* getColBySubject(string s) const;
 };
 
 #endif //THE_BEST_PROJECT_TIMESERIES_H

@@ -9,16 +9,17 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 }
 
+// Earlier stage - Create vector of correlations by learn normality from the TimeSeries
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
+    // Help numbers
     int colSize = ts.getColSize(), rowSize = ts.getRowSize();
-    // Hello world
     float max, distance, threshold = 0.9;
 
     for (int i = 0; i < rowSize; i++) {
 
         // m is the threshold and c is the column that will be correlative to i
-        int m = threshold, c = -1;
+        float m = threshold, c = -1;
         for (int j = i + 1; j < rowSize; j++) {
 
             // Check if the columns correlatives and save the correlation and the number of column
@@ -41,8 +42,8 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
             // Create struct of correlatedFeatures for the columns
             correlatedFeatures correlation;
             correlation.corrlation = m;
-            correlation.feature1 = ts.getRowSubject(i);
-            correlation.feature2 = ts.getRowSubject(c);
+            correlation.feature1 = ts.getColSubject(i);
+            correlation.feature2 = ts.getColSubject(c);
             correlation.lin_reg = linear_reg(points, colSize);
 
             // Find the biggest deviation of point from the linear reg
@@ -54,7 +55,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
                 }
             }
 
-            correlation.threshold = max;
+            correlation.threshold = max * 1.1;
 
             //  Add the correlated feature to the vector of correlations
             this->cf.push_back(correlation);
@@ -63,6 +64,29 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     }
 }
 
-vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
+// Anomaly detection stage - find anomaly detections from the correlations we learned in the earlier stage
+vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
 
+    // Vector of the anomaly reports and count of rows and correlated features.
+    vector<AnomalyReport> detects;
+    int rowCount = ts.getColSize(), cfSize = cf.size();
+
+    // A loop for the rows
+    for (int i = 0; i < rowCount; i++) {
+
+        // A loop for the correlated features
+        for (correlatedFeatures c : cf) {
+
+            // Create a point from the features in the correlation in the row i, column j
+            Point *p = new Point((*ts.getColBySubject(c.feature1))[i],
+                                 (*ts.getColBySubject(c.feature2))[i]);
+
+            // If the deviation of the point is bigger than the threshold report about an anomaly detection
+            if (dev(*p, c.lin_reg) > c.threshold) {
+                AnomalyReport *an = new AnomalyReport(c.feature1 + "-" + c.feature2, i + 1);
+                detects.push_back(*an);
+            }
+        }
+    }
+    return detects;
 }
