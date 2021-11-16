@@ -60,6 +60,10 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
                 }
             }
 
+            for (int k = 0; k < colSize; k++)
+                delete[] points[k];
+
+
             correlation.threshold = max * 1.1;
 
             //  Add the correlated feature to the vector of correlations
@@ -91,6 +95,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
                 AnomalyReport *an = new AnomalyReport(c.feature1 + "-" + c.feature2, i + 1);
                 detects.push_back(*an);
             }
+            delete[] p;
         }
     }
     return detects;
