@@ -3,15 +3,11 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include "anomaly_detection_util.h"
 using namespace std;
 
 // Defining infinity
 const double INF = 1e18;
-
-// Structure to represent a 2D point
-struct Point {
-    double X, Y;
-};
 
 // Structure to represent a 2D circle
 struct Circle {
@@ -23,7 +19,7 @@ struct Circle {
 // between two points
 double dist(const Point& a, const Point& b)
 {
-    return sqrt(pow(a.X - b.X, 2) + pow(a.Y - b.Y, 2));
+    return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
 }
 
 // Function to check whether a point lies inside
@@ -39,12 +35,12 @@ bool is_inside(const Circle& c, const Point& p)
 // points are given.
 
 // Helper method to get a circle defined by 3 points
-Point get_circle_center(double bx, double by,
-                        double cx, double cy)
+Point get_circle_center(float bx, float by,
+                        float cx, float cy)
 {
-    double B = bx * bx + by * by;
-    double C = cx * cx + cy * cy;
-    double D = bx * cy - by * cx;
+    float B = bx * bx + by * by;
+    float C = cx * cx + cy * cy;
+    float D = bx * cy - by * cx;
     return { (cy * B - by * C) / (2 * D),
              (bx * C - cx * B) / (2 * D) };
 }
@@ -54,10 +50,10 @@ Point get_circle_center(double bx, double by,
 Circle circle_from(const Point& A, const Point& B,
                    const Point& C)
 {
-    Point I = get_circle_center(B.X - A.X, B.Y - A.Y,
-                                C.X - A.X, C.Y - A.Y);
-    I.X += A.X;
-    I.Y += A.Y;
+    Point I = get_circle_center(B.x - A.x, B.y - A.y,
+                                C.x - A.x, C.y - A.y);
+    I.x += A.x;
+    I.y += A.y;
     return { I, dist(I, A) };
 }
 
@@ -66,10 +62,11 @@ Circle circle_from(const Point& A, const Point& B,
 Circle circle_from(const Point& A, const Point& B)
 {
     // Set the center to be the midpoint of A and B
-    Point C = { (A.X + B.X) / 2.0, (A.Y + B.Y) / 2.0 };
+//    Point C = { (A.x + B.x) / 2.0, (A.y + B.y) / 2.0 };
+    Point* C = new Point((A.x + B.x) / 2.0, (A.y + B.y) / 2.0);
 
     // Set the radius to be half the distance AB
-    return { C, dist(A, B) / 2.0 };
+    return { *C, dist(A, B) / 2.0 };
 }
 
 // Function to check whether a circle encloses the given points
