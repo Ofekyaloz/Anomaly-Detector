@@ -34,6 +34,7 @@ public:
     Point(float x, float y):x(x),y(y){}
 };
 
+
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size);
 

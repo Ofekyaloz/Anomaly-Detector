@@ -6,7 +6,7 @@
 #include <fstream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
-#include <math.h>
+#include "minCircle.h"
 
 using namespace std;
 
@@ -59,6 +59,21 @@ void checkCorrelationTrain(correlatedFeatures c,string f1, string f2, float a, f
 }
 
 int main(){
+    Circle mec = welzl({{0, 0},
+                        {0, 1},
+                        {1, 0}});
+    cout << "Center = { " << mec.p.x << ", " << mec.p.y
+         << " } Radius = " << mec.r << endl;
+
+    Circle mec2 = welzl({{5,  -2},
+                         {-3, -2},
+                         {-2, 5},
+                         {1,  6},
+                         {0,  2}});
+    cout << "Center = { " << mec2.p.x << ", " << mec2.p.y
+         << " } Radius = " << mec2.r << endl;
+
+    return 0;
     srand (time(NULL));
     float a1=1+rand()%10, b1=-50+rand()%100;
     float a2=1+rand()%20 , b2=-50+rand()%100;
