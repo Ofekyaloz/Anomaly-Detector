@@ -14,7 +14,7 @@ float distance(const Point& p1, const Point& p2) {
 
 // check if the circle contains the point
 bool is_in_circle(const Circle& c, const Point& p) {
-    return (distance(c.p, p) <= c.r);
+    return (distance(c.center, p) <= c.radius);
 }
 
 // get the center of the circle
@@ -72,7 +72,7 @@ Circle min_circle_trivial(vector<Point>& points) {
 
 // welzl algorithm - returns the minimum circle by using in a vector of points and of boundary points.
 // n represents the number of points in points that are not yet processed.
-Circle welzl_algorithm(vector<Point>& points, vector<Point> boundary_points, int n)
+Circle welzl_algorithm(Point** points, vector<Point> boundary_points, int n)
 {
     // Base case when all points processed or |boundary_points| = 3
     if (n == 0 || boundary_points.size() == 3) {
@@ -83,19 +83,17 @@ Circle welzl_algorithm(vector<Point>& points, vector<Point> boundary_points, int
     Circle c = welzl_algorithm(points, boundary_points, n - 1);
 
     // If c contains the last point, return c
-    if (is_in_circle(c, points[n - 1])) {
+    if (is_in_circle(c, *points[n - 1])) {
         return c;
     }
 
     // Otherwise, the last point must be on the boundary_points of the minimum circle
-    boundary_points.push_back(points[n - 1]);
+    boundary_points.push_back(*points[n - 1]);
 
     // Return the minimum circle for the vector of points without the last one and boundary_points with the last one
     return welzl_algorithm(points, boundary_points, n - 1);
 }
 
-Circle welzl(const vector<Point>& points)
-{
-    vector<Point> copy = points;
-    return welzl_algorithm(copy, {}, copy.size());
+Circle findMinCircle(Point** points,size_t size) {
+    return welzl_algorithm(points, {}, size);
 }

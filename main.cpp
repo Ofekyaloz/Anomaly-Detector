@@ -58,67 +58,153 @@ void checkCorrelationTrain(correlatedFeatures c,string f1, string f2, float a, f
 
 }
 
+
+// last mainTrain
+
+//int main(){
+//    Circle mec = findMinCircle({{0, 0},
+//                        {0, 1},
+//                        {1, 0}});
+//    cout << "Center = { " << mec.center.x << ", " << mec.center.y
+//         << " } Radius = " << mec.radius << endl;
+//
+//    Circle mec2 = findMinCircle({{5,  -2},
+//                         {-3, -2},
+//                         {-2, 5},
+//                         {1,  6},
+//                         {0,  2}});
+//    cout << "Center = { " << mec2.center.x << ", " << mec2.center.y
+//         << " } Radius = " << mec2.radius << endl;
+//
+//    return 0;
+//    srand (time(NULL));
+//    float a1=1+rand()%10, b1=-50+rand()%100;
+//    float a2=1+rand()%20 , b2=-50+rand()%100;
+//
+//
+//    // test the learned model: (40 points)
+//    // expected correlations:
+//    //	A-C: y=a1*x+b1
+//    //	B-D: y=a2*x+b2
+//
+//    generateTrainCSV(a1,b1,a2,b2);
+//    TimeSeries ts("trainFile1.csv");
+//    SimpleAnomalyDetector ad;
+//    ad.learnNormal(ts);
+//    vector<correlatedFeatures> cf=ad.getNormalModel();
+//
+//    if(cf.size()!=2)
+//        cout<<"wrong size of correlated features (-40)" << endl;
+//    else
+//        for_each(cf.begin(),cf.end(),[&a1,&b1,&a2,&b2](correlatedFeatures c){
+//            checkCorrelationTrain(c,"A","C",a1,b1); // 20 points
+//            checkCorrelationTrain(c,"B","D",a2,b2); // 20 points
+//        });
+//
+//    // test the anomaly detector: (60 points)
+//    // one simply anomaly is injected to the data
+//    int anomaly=5+rand()%90; // one anomaly injected in a random time step
+//    generateTestCSV(a1,b1,a2,b2,anomaly);
+//    TimeSeries ts2("testFile1.csv");
+//    vector<AnomalyReport> r = ad.detect(ts2);
+//
+//    bool anomlyDetected=false;
+//    int falseAlarms=0;
+//    for_each(r.begin(),r.end(),[&anomaly,&anomlyDetected,&falseAlarms](AnomalyReport ar){
+//        if(ar.description=="A-C" && ar.timeStep == anomaly)
+//            anomlyDetected=true;
+//        else
+//            falseAlarms++;
+//    });
+//
+//    if(!anomlyDetected)
+//        cout<<"the anomaly was not detected (-30)"<<endl;
+//
+//    if(falseAlarms>0)
+//        cout<<"you have "<<falseAlarms<<" false alarms (-"<<min(30,falseAlarms*3)<<")"<<endl;
+//
+//    cout<<"done"<<endl;
+//    return 0;
+//}
+
+// new MainTrain
+
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include "minCircle.h"
+#include <chrono>
+
+using namespace std;
+using namespace std::chrono;
+
+
+Point** generate(Point center,int R, size_t size){
+    Point** p =new Point*[size];
+    for(size_t i=0;i<size;i++){
+        float r=1+rand()%R;
+        float a=3.14159*(rand()%360)/180;
+        float x=center.x+r*cos(a);
+        float y=center.y+r*sin(a);
+        p[i]=new Point(x,y);
+    }
+    return p;
+}
+
+
 int main(){
-    Circle mec = welzl({{0, 0},
-                        {0, 1},
-                        {1, 0}});
-    cout << "Center = { " << mec.p.x << ", " << mec.p.y
-         << " } Radius = " << mec.r << endl;
-
-    Circle mec2 = welzl({{5,  -2},
-                         {-3, -2},
-                         {-2, 5},
-                         {1,  6},
-                         {0,  2}});
-    cout << "Center = { " << mec2.p.x << ", " << mec2.p.y
-         << " } Radius = " << mec2.r << endl;
-
-    return 0;
     srand (time(NULL));
-    float a1=1+rand()%10, b1=-50+rand()%100;
-    float a2=1+rand()%20 , b2=-50+rand()%100;
+    const size_t N=250;
+    float R=10+rand()%1000;
+    float cx=-500+rand()%1001;
+    float cy=-500+rand()%1001;
+    Point** ps=generate(Point(cx,cy),R,N);
 
+    // your working copy
+    Point** ps_copy=new Point*[N];
+    for(size_t i=0;i<N;i++)
+        ps_copy[i]=new Point(ps[i]->x,ps[i]->y);
 
-    // test the learned model: (40 points)
-    // expected correlations:
-    //	A-C: y=a1*x+b1
-    //	B-D: y=a2*x+b2
+    auto start = high_resolution_clock::now();
+    Circle c=findMinCircle(ps_copy,N);
+    auto stop = high_resolution_clock::now();
 
-    generateTrainCSV(a1,b1,a2,b2);
-    TimeSeries ts("trainFile1.csv");
-    SimpleAnomalyDetector ad;
-    ad.learnNormal(ts);
-    vector<correlatedFeatures> cf=ad.getNormalModel();
+    if((int)c.radius>(int)R)
+        cout<<"you need to find a minimal radius (-40)"<<endl;
 
-    if(cf.size()!=2)
-        cout<<"wrong size of correlated features (-40)" << endl;
-    else
-        for_each(cf.begin(),cf.end(),[&a1,&b1,&a2,&b2](correlatedFeatures c){
-            checkCorrelationTrain(c,"A","C",a1,b1); // 20 points
-            checkCorrelationTrain(c,"B","D",a2,b2); // 20 points
-        });
+    bool covered=true;
+    for(size_t i=0;i<N && covered;i++){
+        float x2=(c.center.x-ps[i]->x)*(c.center.x-ps[i]->x);
+        float y2=(c.center.y-ps[i]->y)*(c.center.y-ps[i]->y);
+        float d=sqrt(x2+y2);
+        if(d>c.radius+1)
+            covered=false;
+    }
+    if(!covered)
+        cout<<"all points should be covered (-45)"<<endl;
 
-    // test the anomaly detector: (60 points)
-    // one simply anomaly is injected to the data
-    int anomaly=5+rand()%90; // one anomaly injected in a random time step
-    generateTestCSV(a1,b1,a2,b2,anomaly);
-    TimeSeries ts2("testFile1.csv");
-    vector<AnomalyReport> r = ad.detect(ts2);
+    auto duration = duration_cast<microseconds>(stop - start);
+    int stime=duration.count();
+    cout<<"your time: "<<stime<<" microseconds"<<endl;
+    if(stime>3000){
+        cout<<"over time limit ";
+        if(stime<=3500)
+            cout<<"(-5)"<<endl;
+        else if(stime<=4000)
+            cout<<"(-8)"<<endl;
+        else if(stime<=6000)
+            cout<<"(-10)"<<endl;
+        else cout<<"(-15)"<<endl;
+    }
 
-    bool anomlyDetected=false;
-    int falseAlarms=0;
-    for_each(r.begin(),r.end(),[&anomaly,&anomlyDetected,&falseAlarms](AnomalyReport ar){
-        if(ar.description=="A-C" && ar.timeStep == anomaly)
-            anomlyDetected=true;
-        else
-            falseAlarms++;
-    });
-
-    if(!anomlyDetected)
-        cout<<"the anomaly was not detected (-30)"<<endl;
-
-    if(falseAlarms>0)
-        cout<<"you have "<<falseAlarms<<" false alarms (-"<<min(30,falseAlarms*3)<<")"<<endl;
+    for(size_t i=0;i<N;i++){
+        delete ps[i];
+        delete ps_copy[i];
+    }
+    delete[] ps;
+    delete[] ps_copy;
 
     cout<<"done"<<endl;
     return 0;

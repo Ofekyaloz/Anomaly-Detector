@@ -2,23 +2,30 @@
 // Created by giligutfeld on 06/12/2021.
 //
 
-#ifndef THE_BEST_PROJECT_MINCIRCLE_H
-#define THE_BEST_PROJECT_MINCIRCLE_H
 
-#include <algorithm>
-#include <assert.h>
+#ifndef MINCIRCLE_H_
+#define MINCIRCLE_H_
+
+#include <iostream>
+#include <vector>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+#include "anomaly_detection_util.h"
 #include <math.h>
 #include <vector>
-#include "anomaly_detection_util.h"
 
-// Structure to represent a 2D circle
-class Circle {
+using namespace std;
+
+// ------------ DO NOT CHANGE -----------
+
+class Circle{
 public:
-    Point p;
-    float r;
-    Circle(Point p, float r):p(p),r(r){}
+    Point center;
+    float radius;
+    Circle(Point c,float r):center(c),radius(r){}
 };
+// --------------------------------------
 
-Circle welzl(const std::vector<Point>& P);
+Circle findMinCircle(Point** points,size_t size);
 
-#endif //THE_BEST_PROJECT_MINCIRCLE_H
+#endif /* MINCIRCLE_H_ */
