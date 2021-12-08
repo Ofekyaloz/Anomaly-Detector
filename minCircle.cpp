@@ -74,7 +74,7 @@ Circle min_circle_trivial(vector<Point*>& points) {
 
 // welzl algorithm - returns the minimum circle by using in a vector of points and of boundary points.
 // n represents the number of points in points that are not yet processed.
-Circle welzl_algorithm(vector<Point*> points, vector<Point*> boundary_points, int n)
+Circle welzl_algorithm(Point** points, vector<Point*> boundary_points, int n)
 {
     // Base case when all points processed or |boundary_points| = 3
     if (n == 0 || boundary_points.size() == 3) {
@@ -97,6 +97,5 @@ Circle welzl_algorithm(vector<Point*> points, vector<Point*> boundary_points, in
 }
 
 Circle findMinCircle(Point** points, size_t size) {
-    vector<Point*> vect(points, points + size);
-    return welzl_algorithm(vect, {}, size);
+    return welzl_algorithm(points, {}, size);
 }
