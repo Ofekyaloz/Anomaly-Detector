@@ -40,39 +40,41 @@ Circle get_circle(const Point& p1, const Point& p2) {
 }
 
 // check if the circle contains all the points in the vector we got
-bool is_encloses_points(const Circle& c, const vector<Point>& p) {
-    for (const Point &p: p)
-        if (!is_in_circle(c, p))
+bool is_encloses_points(const Circle& c, const vector<Point*>& points) {
+    for (Point *p: points) {
+        if (!is_in_circle(c, *p)){
             return false;
+        }
+    }
     return true;
 }
 
 // get the minimum circle from 0, 1, 2 or 3 points
-Circle min_circle_trivial(vector<Point>& points) {
+Circle min_circle_trivial(vector<Point*>& points) {
     if (points.empty()) {
         return {{0, 0}, 0};
     } else if (points.size() == 1) {
-        return {points[0], 0};
+        return {*points[0], 0};
     } else if (points.size() == 2) {
-        return get_circle(points[0], points[1]);
+        return get_circle(*points[0], *points[1]);
     }
 
     // Check if we can find a circle that contains all the three points by only two points
     for (int i = 0; i < 3; i++) {
         for (int j = i + 1; j < 3; j++) {
-            Circle c = get_circle(points[i], points[j]);
+            Circle c = get_circle(*points[i], *points[j]);
             if (is_encloses_points(c, points))
                 return c;
         }
     }
 
     // we must create circle from three points
-    return get_circle(points[0], points[1], points[2]);
+    return get_circle(*points[0], *points[1], *points[2]);
 }
 
 // welzl algorithm - returns the minimum circle by using in a vector of points and of boundary points.
 // n represents the number of points in points that are not yet processed.
-Circle welzl_algorithm(Point** points, vector<Point> boundary_points, int n)
+Circle welzl_algorithm(vector<Point*> points, vector<Point*> boundary_points, int n)
 {
     // Base case when all points processed or |boundary_points| = 3
     if (n == 0 || boundary_points.size() == 3) {
@@ -88,12 +90,13 @@ Circle welzl_algorithm(Point** points, vector<Point> boundary_points, int n)
     }
 
     // Otherwise, the last point must be on the boundary_points of the minimum circle
-    boundary_points.push_back(*points[n - 1]);
+    boundary_points.push_back(points[n - 1]);
 
     // Return the minimum circle for the vector of points without the last one and boundary_points with the last one
     return welzl_algorithm(points, boundary_points, n - 1);
 }
 
-Circle findMinCircle(Point** points,size_t size) {
-    return welzl_algorithm(points, {}, size);
+Circle findMinCircle(Point** points, size_t size) {
+    vector<Point*> vect(points, points + size);
+    return welzl_algorithm(vect, {}, size);
 }
