@@ -110,6 +110,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
     return detects;
 }
 
+// return if there is a deviation in the SimpleAnomalyDetector
 bool SimpleAnomalyDetector::isDeviation (Point *p, correlatedFeatures c) {
     return dev(*p, c.lin_reg) > c.threshold;
 }
