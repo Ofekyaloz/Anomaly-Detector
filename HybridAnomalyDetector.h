@@ -12,7 +12,7 @@ class HybridAnomalyDetector:public SimpleAnomalyDetector {
 public:
 	HybridAnomalyDetector();
 	virtual ~HybridAnomalyDetector();
-    virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point **point);
+    void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point **point) override;
     virtual bool isDeviation (Point *p, correlatedFeatures c);
 };
 

@@ -39,7 +39,7 @@ protected:
     virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points);
     float getThreshold(Point** points,int size,Line lin_reg);
     Point** pointsToArray(vector<float> v1, vector<float> v2, int size);
-    bool isDeviation (Point *p, correlatedFeatures c);
+    virtual bool isDeviation (Point *p, correlatedFeatures c);
 };
 
 
