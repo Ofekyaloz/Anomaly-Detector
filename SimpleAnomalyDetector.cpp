@@ -33,7 +33,9 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
                 c = j;
             }
         }
-
+        if (c == -1) {
+            continue;
+        }
         // Add the correlation between columns i and c by using pointsToArray and checkCorrelation functions
         Point **points = pointsToArray(ts.getCol(i), ts.getCol(c), colSize);
         checkCorrelation(ts, i, c, m, points);
