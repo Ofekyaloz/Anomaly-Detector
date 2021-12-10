@@ -1,101 +1,80 @@
-/*
- * Authors: Gili Gutfeld - 209284512
- * Ofek Yaloz - 206666729
- */
-
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
 #include "minCircle.h"
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
-// return the distance between two points
-float distance(const Point& p1, const Point& p2) {
-    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-}
 
-// check if the circle contains the point
-bool is_in_circle(const Circle& c, const Point& p) {
-    return (distance(c.center, p) <= c.radius);
-}
-
-// get the center of the circle
-Point get_circle_center(float x1, float y1, float x2, float y2) {
-    float a = x1 * x1 + y1 * y1;
-    float b = x2 * x2 + y2 * y2;
-    float c = x1 * y2 - y1 * x2;
-    return Point((y2 * a - y1 * b) / (2 * c), (x1 * b - x2 * a) / (2 * c));
-}
-
-// get the minimum circle from three points by calling the get_circle_center function
-Circle get_circle(const Point& p1, const Point& p2, const Point& p3) {
-    Point I = get_circle_center(p2.x - p1.x, p2.y - p1.y, p3.x - p1.x, p3.y - p1.y);
-    I.x += p1.x;
-    I.y += p1.y;
-    return {I, distance(I, p1)};
-}
-
-// get the minimum circle from two points
-Circle get_circle(const Point& p1, const Point& p2) {
-    Point *p = new Point((p1.x + p2.x) / 2.0, (p1.y + p2.y) / 2.0);
-    return Circle(*p, (distance(p1, p2)) / 2.0);
-}
-
-// check if the circle contains all the points in the vector we got
-bool is_encloses_points(const Circle& c, const vector<Point*>& points) {
-    for (Point *p: points) {
-        if (!is_in_circle(c, *p)){
-            return false;
-        }
+Point** generate(Point center,int R, size_t size){
+    Point** p =new Point*[size];
+    for(size_t i=0;i<size;i++){
+        float r=1+rand()%R;
+        float a=3.14159*(rand()%360)/180;
+        float x=center.x+r*cos(a);
+        float y=center.y+r*sin(a);
+        p[i]=new Point(x,y);
     }
-    return true;
+    return p;
 }
 
-// get the minimum circle from 0, 1, 2 or 3 points
-Circle min_circle_trivial(vector<Point*>& points) {
-    if (points.empty()) {
-        return {{0, 0}, 0};
-    } else if (points.size() == 1) {
-        return {*points[0], 0};
-    } else if (points.size() == 2) {
-        return get_circle(*points[0], *points[1]);
+
+int main(){
+    srand (time(NULL));
+    const size_t N=250;
+    float R=10+rand()%1000;
+    float cx=-500+rand()%1001;
+    float cy=-500+rand()%1001;
+    Point** ps=generate(Point(cx,cy),R,N);
+
+    // your working copy
+    Point** ps_copy=new Point*[N];
+    for(size_t i=0;i<N;i++)
+        ps_copy[i]=new Point(ps[i]->x,ps[i]->y);
+
+    auto start = high_resolution_clock::now();
+    Circle c=findMinCircle(ps_copy,N);
+    auto stop = high_resolution_clock::now();
+
+    if((int)c.radius>(int)R)
+        cout<<"you need to find a minimal radius (-40)"<<endl;
+
+    bool covered=true;
+    for(size_t i=0;i<N && covered;i++){
+        float x2=(c.center.x-ps[i]->x)*(c.center.x-ps[i]->x);
+        float y2=(c.center.y-ps[i]->y)*(c.center.y-ps[i]->y);
+        float d=sqrt(x2+y2);
+        if(d>c.radius+1)
+            covered=false;
     }
+    if(!covered)
+        cout<<"all points should be covered (-45)"<<endl;
 
-    // Check if we can find a circle that contains all the three points by only two points
-    for (int i = 0; i < 3; i++) {
-        for (int j = i + 1; j < 3; j++) {
-            Circle c = get_circle(*points[i], *points[j]);
-            if (is_encloses_points(c, points))
-                return c;
-        }
-    }
-
-    // we must create circle from three points
-    return get_circle(*points[0], *points[1], *points[2]);
-}
-
-// welzl algorithm - returns the minimum circle by using in a vector of points and of boundary points.
-// n represents the number of points in points that are not yet processed.
-Circle welzl_algorithm(Point** points, vector<Point*> boundary_points, int n)
-{
-    // Base case when all points processed or |boundary_points| = 3
-    if (n == 0 || boundary_points.size() == 3) {
-        return min_circle_trivial(boundary_points);
+    auto duration = duration_cast<microseconds>(stop - start);
+    int stime=duration.count();
+    cout<<"your time: "<<stime<<" microseconds"<<endl;
+    if(stime>3000){
+        cout<<"over time limit ";
+        if(stime<=3500)
+            cout<<"(-5)"<<endl;
+        else if(stime<=4000)
+            cout<<"(-8)"<<endl;
+        else if(stime<=6000)
+            cout<<"(-10)"<<endl;
+        else cout<<"(-15)"<<endl;
     }
 
-    // Get the minimum circle from the vector of points without the last one
-    Circle c = welzl_algorithm(points, boundary_points, n - 1);
-
-    // If c contains the last point, return c
-    if (is_in_circle(c, *points[n - 1])) {
-        return c;
+    for(size_t i=0;i<N;i++){
+        delete ps[i];
+        delete ps_copy[i];
     }
+    delete[] ps;
+    delete[] ps_copy;
 
-    // Otherwise, the last point must be on the boundary_points of the minimum circle
-    boundary_points.push_back(points[n - 1]);
-
-    // Return the minimum circle for the vector of points without the last one and boundary_points with the last one
-    return welzl_algorithm(points, boundary_points, n - 1);
-}
-
-Circle findMinCircle(Point** points, size_t size) {
-    return welzl_algorithm(points, {}, size);
+    cout<<"done"<<endl;
+    return 0;
 }

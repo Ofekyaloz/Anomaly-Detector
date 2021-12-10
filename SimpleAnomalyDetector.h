@@ -13,11 +13,10 @@
 #include <string.h>
 #include <math.h>
 
-struct correlatedFeatures{
-    string feature1,feature2;  // names of the correlated features
-    float corrlation;
+struct correlatedFeatures {
+    string feature1, feature2;  // names of the correlated features
+    float corrlation, threshold;
     Line lin_reg;
-    float threshold;
     Point center;
 };
 

@@ -3,7 +3,6 @@
 
 HybridAnomalyDetector::HybridAnomalyDetector() {
     this->minThreshold = 0.5;
-
 }
 
 HybridAnomalyDetector::~HybridAnomalyDetector() {
