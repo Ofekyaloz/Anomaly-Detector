@@ -21,8 +21,6 @@ struct correlatedFeatures {
 };
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
-    vector<correlatedFeatures> cf;
-    float threshold;
 
 public:
     SimpleAnomalyDetector();
@@ -35,6 +33,9 @@ public:
     }
 
 protected:
+    vector<correlatedFeatures> cf;
+    float threshold;
+
     virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points);
     float getThreshold(Point** points,int size,Line lin_reg);
     Point** pointsToArray(vector<float> v1, vector<float> v2, int size);
