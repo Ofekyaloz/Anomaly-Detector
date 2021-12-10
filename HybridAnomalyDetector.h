@@ -13,6 +13,7 @@ public:
 	HybridAnomalyDetector();
 	virtual ~HybridAnomalyDetector();
     virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point **point);
+    virtual bool isDeviation (Point *p, correlatedFeatures c);
 };
 
 #endif /* HYBRIDANOMALYDETECTOR_H_ */

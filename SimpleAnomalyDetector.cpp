@@ -100,7 +100,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
             Point *p = new Point((*ts.getColBySubject(c.feature1))[i],(*ts.getColBySubject(c.feature2))[i]);
 
             // If the deviation of the point is bigger than the threshold report about an anomaly detection
-            if (dev(*p, c.lin_reg) > c.threshold) {
+            if (isDeviation(p, c)) {
                 AnomalyReport *an = new AnomalyReport(c.feature1 + "-" + c.feature2, i + 1);
                 detects.push_back(*an);
             }
@@ -108,4 +108,8 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts) {
         }
     }
     return detects;
+}
+
+bool SimpleAnomalyDetector::isDeviation (Point *p, correlatedFeatures c) {
+    return dev(*p, c.lin_reg) > c.threshold;
 }

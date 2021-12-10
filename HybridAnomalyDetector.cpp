@@ -29,3 +29,7 @@ void HybridAnomalyDetector::checkCorrelation(const TimeSeries& ts, int c1, int c
     this->cf.push_back(correlation);
 }
 
+bool HybridAnomalyDetector::isDeviation (Point *p, correlatedFeatures c) {
+    return ((c.corrlation > minThreshold) && (c.corrlation < threshold) && (distance(*p, c.center) > c.threshold))
+    || ((c.corrlation >= threshold) && (SimpleAnomalyDetector::isDeviation(p, c)));
+}
