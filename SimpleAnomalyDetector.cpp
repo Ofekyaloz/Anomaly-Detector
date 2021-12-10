@@ -20,22 +20,19 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     // Help numbers
     int colSize = ts.getColSize(), rowSize = ts.getRowSize();
 
-    for (int i = 0; i < rowSize; i++) {
-
+    for (int i = 0; i < rowSize - 1; i++) {
         // m is the threshold and c is the column that will be correlative to i
         float m = 0, c = -1;
         for (int j = i + 1; j < rowSize; j++) {
 
             // Check if the columns correlatives and save the correlation and the number of column
-            float p = pearson(&ts.getCol(i)[0], &ts.getCol(j)[0], colSize);
+            float p = abs(pearson(&ts.getCol(i)[0], &ts.getCol(j)[0], colSize));
             if (p > m) {
                 m = p;
                 c = j;
             }
         }
-        if (c == -1) {
-            continue;
-        }
+
         // Add the correlation between columns i and c by using pointsToArray and checkCorrelation functions
         Point **points = pointsToArray(ts.getCol(i), ts.getCol(c), colSize);
         checkCorrelation(ts, i, c, m, points);

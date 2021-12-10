@@ -28,3 +28,4 @@ void HybridAnomalyDetector::checkCorrelation(const TimeSeries& ts, int c1, int c
     // Add the correlated feature to the vector of correlations
     this->cf.push_back(correlation);
 }
+
