@@ -1,9 +1,4 @@
-/*
- * MainTrain.cpp
- *
- *  Created on: 11 áàå÷× 2020
- *      Author: Eli
- */
+
 
 #include <iostream>
 #include <vector>
