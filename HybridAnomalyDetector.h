@@ -7,10 +7,12 @@
 #include "minCircle.h"
 
 class HybridAnomalyDetector:public SimpleAnomalyDetector {
+    float minThreshold;
+
 public:
 	HybridAnomalyDetector();
 	virtual ~HybridAnomalyDetector();
-
+    virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m);
 };
 
 #endif /* HYBRIDANOMALYDETECTOR_H_ */

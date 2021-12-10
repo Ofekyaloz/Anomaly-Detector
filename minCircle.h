@@ -26,6 +26,14 @@ public:
 };
 // --------------------------------------
 
-Circle findMinCircle(Point** points,size_t size);
+float distance(const Point& p1, const Point& p2);
+bool is_in_circle(const Circle& c, const Point& p);
+Point get_circle_center(float x1, float y1, float x2, float y2);
+Circle get_circle(const Point& p1, const Point& p2, const Point& p3);
+Circle get_circle(const Point& p1, const Point& p2);
+bool is_encloses_points(const Circle& c, const vector<Point*>& points);
+Circle min_circle_trivial(vector<Point*>& points);
+Circle welzl_algorithm(Point** points, vector<Point*> boundary_points, int n);
+Circle findMinCircle(Point** points, size_t size);
 
 #endif /* MINCIRCLE_H_ */
