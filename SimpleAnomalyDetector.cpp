@@ -19,7 +19,6 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
     // Help numbers
     int colSize = ts.getColSize(), rowSize = ts.getRowSize();
-    float max, distance, threshold = 0.9;
 
     for (int i = 0; i < rowSize; i++) {
 
@@ -68,7 +67,7 @@ float SimpleAnomalyDetector::getThreshold(Point** points,int size,Line lin_reg) 
 }
 
 void SimpleAnomalyDetector::checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points) {
-    if (m <= this->threshold)
+    if (m < this->threshold)
         return;
 
     int size = ts.getColSize();

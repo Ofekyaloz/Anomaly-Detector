@@ -10,9 +10,9 @@ HybridAnomalyDetector::~HybridAnomalyDetector() {
 }
 
 
-void SimpleAnomalyDetector::checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points) {
-    SimpleAnomalyDetector::checkCorrelation(ts, c1, c2, m);
-    if (p < minThreshold || p > threshold)
+void HybridAnomalyDetector::checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points) {
+    SimpleAnomalyDetector::checkCorrelation(ts, c1, c2, m, points);
+    if (m < minThreshold || m > threshold)
         return;
 
     Circle c = findMinCircle(points, ts.getColSize());
