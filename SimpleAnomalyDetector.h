@@ -27,6 +27,9 @@ public:
     virtual ~SimpleAnomalyDetector();
     virtual void learnNormal(const TimeSeries& ts);
     virtual vector<AnomalyReport> detect(const TimeSeries& ts);
+    void setThreshold(float value) {
+        this->threshold = value;
+    }
 
     vector<correlatedFeatures> getNormalModel(){
         return cf;
@@ -35,10 +38,6 @@ public:
 protected:
     vector<correlatedFeatures> cf;
     float threshold;
-
-    float getThreshold() {
-        return threshold;
-    }
     virtual void checkCorrelation(const TimeSeries& ts, int c1, int c2, float m, Point** points);
     float getThreshold(Point** points,int size,Line lin_reg);
     Point** pointsToArray(vector<float> v1, vector<float> v2, int size);

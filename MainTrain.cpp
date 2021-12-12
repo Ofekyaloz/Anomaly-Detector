@@ -1,13 +1,13 @@
 /*
  * run2.cpp
  *
- *  Created on: 8 áãöî× 2019
+ *  Created on: 8 ï¿½ï¿½ï¿½ï¿½ï¿½ 2019
  *      Author: Eli
  */
 
 #include <iostream>
 #include <fstream>
-#include "commands.h"
+#include "cmake-build-debug/commands.h"
 #include "CLI.h"
 
 using namespace std;

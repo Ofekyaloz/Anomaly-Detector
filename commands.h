@@ -35,11 +35,20 @@ public:
 
 };
 
+struct Report {
+    int startTime = 0;
+    int endTime = 0;
+    string description = "";
+    bool TP = false;
+};
+
 struct CommandInfo {
     float threshold;
     vector<AnomalyReport> detects;
-
+    vector<Report> reports;
+    int numberOfRows;
 };
+
 
 // you may add here helper classes
 
@@ -48,17 +57,23 @@ struct CommandInfo {
 class Command{
 protected:
     DefaultIO* dio;
+    string description;
 public:
     Command(DefaultIO* dio):dio(dio){}
     virtual void execute(CommandInfo* info)=0;
     virtual ~Command(){}
+    string getTitle() {
+        return this->description;
+    }
 };
 
 // implement here your command classes
 class UploadCsv: public Command{
 
 public:
-    UploadCsv(DefaultIO* dio): Command(dio) {};
+    UploadCsv(DefaultIO* dio): Command(dio) {
+         this->description = "upload a time series csv file\n";
+    };
 
     virtual void execute(CommandInfo* info) override {
         dio->write("Please upload your local train CSV file.\n");
@@ -72,7 +87,9 @@ public:
 
 
 class ThresholdSettings: public Command{
-    ThresholdSettings(DefaultIO* dio): Command(dio) {};
+    ThresholdSettings(DefaultIO* dio): Command(dio) {
+        this->description = "algorithm settings\n";
+    };
 
     virtual void execute(CommandInfo* info) override {
         while (1) {
@@ -92,21 +109,76 @@ class ThresholdSettings: public Command{
 };
 
 class RunDetect: public Command{
-    RunDetect(DefaultIO* dio): Command(dio) {};
+    RunDetect(DefaultIO* dio): Command(dio) {
+        this->description = "detect anomalies\n";
+    };
     virtual void execute(CommandInfo* info) override {
+        TimeSeries train("trainCSV");
+        TimeSeries test ("testCSV");
+        HybridAnomalyDetector detector;
+        detector.setThreshold(info->threshold);
+        detector.learnNormal(train);
+        info->detects = detector.detect("testCSV");
+        info->numberOfRows = test.getColSize();
+
+        Report r;
+//        r.description = "";
+//        r.endTime = 0;
+//        r.startTime = 0;
+        r.TP = false;
+        for (AnomalyReport anomalyReport: info->detects) {
+            if ((anomalyReport.timeStep != r.endTime + 1) && (anomalyReport.description != r.description)) {
+                r.startTime = anomalyReport.timeStep;
+                r.endTime = anomalyReport.timeStep;
+                r.description = anomalyReport.description;
+                info->reports.push_back(r);
+                continue;
+            }
+            r.endTime++;
+        }
+
+        dio->write("anomaly detection complete.\n");
 
     }
 };
 
 class DisplayResults: public Command{
+    DisplayResults(DefaultIO* dio): Command(dio) {
+        this->description = "display results\n";
+    };
+    virtual void execute(CommandInfo* info) override {
+        for (AnomalyReport report: info->detects) {
+            dio->write(report.timeStep + "\t" + report.description + "\n");
+        }
+        dio->write("Done.\n");
+    }
 
 };
 
 class AnalyzeResults: public Command{
+    AnalyzeResults(DefaultIO* dio): Command(dio) {
+        this->description = "upload anomalies and analyze results\n";
+    }
+    virtual void execute(CommandInfo* info) override {
+        dio->write("Please upload your local anomalies file.\n");
+        string data = "";
+        while ((data = dio->read()) != "Done.") {
+            size_t coma = data.find(",");
+            int start = stoi(data.substr(0, coma));
+            int end = stoi(data.substr( coma + 1, data.length()));
+
+        }
+    }
 
 };
 
 class Exit: public Command{
+    Exit(DefaultIO* dio): Command(dio) {
+        this->description = "exit";
+    };
+    virtual void execute(CommandInfo* info) override {
+        return;
+    }
 
 };
 
