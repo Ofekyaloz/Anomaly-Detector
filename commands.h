@@ -87,6 +87,7 @@ public:
 
 
 class ThresholdSettings: public Command{
+public:
     ThresholdSettings(DefaultIO* dio): Command(dio) {
         this->description = "algorithm settings\n";
     };
@@ -109,6 +110,7 @@ class ThresholdSettings: public Command{
 };
 
 class RunDetect: public Command{
+public:
     RunDetect(DefaultIO* dio): Command(dio) {
         this->description = "detect anomalies\n";
     };
@@ -143,6 +145,7 @@ class RunDetect: public Command{
 };
 
 class DisplayResults: public Command{
+public:
     DisplayResults(DefaultIO* dio): Command(dio) {
         this->description = "display results\n";
     };
@@ -156,23 +159,46 @@ class DisplayResults: public Command{
 };
 
 class AnalyzeResults: public Command{
+public:
     AnalyzeResults(DefaultIO* dio): Command(dio) {
         this->description = "upload anomalies and analyze results\n";
     }
+
+    bool isTruePossitive(int start, int end, vector<Report> reports) {
+        for (Report report: reports) {
+            if ((report.startTime <= end && report.endTime <= end) || (start <= report.endTime && start <= report.startTime)) {
+                report.TP = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
     virtual void execute(CommandInfo* info) override {
         dio->write("Please upload your local anomalies file.\n");
         string data = "";
+        float counterTP = 0, counterP = 0, sum = 0;
         while ((data = dio->read()) != "Done.") {
             size_t coma = data.find(",");
             int start = stoi(data.substr(0, coma));
             int end = stoi(data.substr( coma + 1, data.length()));
-
+            if (isTruePossitive(start, end, info->reports)) {
+                counterTP++;
+            }
+            sum+= end - start + 1;
+            counterP++;
         }
+        dio->write("Upload complete.\n");
+//        float TPRate = counterTP / counterP;
+        dio->write("True Positive Rate: " + to_string(counterTP / counterP).substr(0,5) + "\n");
+        float counterFP = info->detects.size() - counterTP;
+        dio->write("False Positive Rate: " + to_string(counterFP / (info->numberOfRows - sum)).substr(0,5) + "\n");
     }
 
 };
 
 class Exit: public Command{
+public:
     Exit(DefaultIO* dio): Command(dio) {
         this->description = "exit";
     };
