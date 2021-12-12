@@ -94,7 +94,7 @@ class ThresholdSettings: public Command{
 class RunDetect: public Command{
     RunDetect(DefaultIO* dio): Command(dio) {};
     virtual void execute(CommandInfo* info) override {
-        timeseries
+
     }
 };
 
