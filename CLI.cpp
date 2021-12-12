@@ -14,7 +14,7 @@ CLI::CLI(DefaultIO* dio) {
 void CLI::start(){
     CommandInfo info;
     dio->write("Welcome to the Anomaly Detection Server. \nPlease choose an option:\n");
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < commandOptions.size(); ++i) {
         dio->write(to_string(i+1) + ". " + this->commandOptions[i]->getTitle() + "\n");
     }
     int choice = stoi(dio->read());
@@ -26,5 +26,8 @@ void CLI::start(){
 
 
 CLI::~CLI() {
+    for (int i = 0; i < commandOptions.size(); i++) {
+        delete commandOptions[i];
+    }
 }
 

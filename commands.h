@@ -77,10 +77,10 @@ public:
 
     virtual void execute(CommandInfo* info) override {
         dio->write("Please upload your local train CSV file.\n");
-        dio->readToFile("trainCSV");
+        dio->readToFile("anomalyTrain.csv");
         dio->write("Upload complete.\n");
         dio->write("Please upload your local test CSV file.\n");
-        dio->readToFile("testCSV");
+        dio->readToFile("anomalyTest.csv");
         dio->write("Upload complete.\n");
     }
 };
@@ -115,12 +115,12 @@ public:
         this->description = "detect anomalies\n";
     };
     virtual void execute(CommandInfo* info) override {
-        TimeSeries train("trainCSV");
-        TimeSeries test ("testCSV");
+        TimeSeries train("anomalyTrain.csv");
+        TimeSeries test("anomalyTest.csv");
         HybridAnomalyDetector detector;
         detector.setThreshold(info->threshold);
         detector.learnNormal(train);
-        info->detects = detector.detect("testCSV");
+        info->detects = detector.detect("anomalyTest.csv");
         info->numberOfRows = test.getColSize();
 
         Report r;
@@ -188,10 +188,10 @@ public:
             sum+= end - start + 1;
             counterP++;
         }
-        dio->write("Upload complete.\n");
-//        float TPRate = counterTP / counterP;
-        dio->write("True Positive Rate: " + to_string(counterTP / counterP).substr(0,5) + "\n");
+
         float counterFP = info->detects.size() - counterTP;
+        dio->write("Upload complete.\n");
+        dio->write("True Positive Rate: " + to_string(counterTP / counterP).substr(0,5) + "\n");
         dio->write("False Positive Rate: " + to_string(counterFP / (info->numberOfRows - sum)).substr(0,5) + "\n");
     }
 
