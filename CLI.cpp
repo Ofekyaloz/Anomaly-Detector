@@ -17,8 +17,8 @@ void CLI::start(){
     for (int i = 0; i < commandOptions.size(); ++i) {
         dio->write(to_string(i+1) + ". " + this->commandOptions[i]->getTitle() + "\n");
     }
-    int choice = stoi(dio->read());
-    if ( choice >= 1 && choice <= 6) {
+    int choice = dio->read()[0] - '0' + 1;
+    if (choice >= 1 && choice <= 6) {
         commandOptions[choice]->execute(&info);
     }
 
