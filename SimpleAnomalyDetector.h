@@ -42,6 +42,4 @@ protected:
     virtual bool isDeviation (Point *p, correlatedFeatures c);
 };
 
-
-
 #endif /* SIMPLEANOMALYDETECTOR_H_ */
