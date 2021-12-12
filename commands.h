@@ -43,10 +43,10 @@ struct Report {
 };
 
 struct CommandInfo {
-    float threshold;
+    float threshold = 0.9;
     vector<AnomalyReport> detects;
     vector<Report> reports;
-    int numberOfRows;
+    int numberOfRows = 0;
 };
 
 

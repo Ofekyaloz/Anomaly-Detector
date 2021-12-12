@@ -11,12 +11,9 @@ CLI::CLI(DefaultIO* dio) {
     this->commandsOptions.push_back(new Exit(dio));
 }
 
-
-
 void CLI::start(){
     CommandInfo info;
-    dio->write("Welcome to the Anomaly Detection Server. \n"
-               "Please choose an option:\n");
+    dio->write("Welcome to the Anomaly Detection Server. \nPlease choose an option:\n");
     for (int i = 0; i < 6; ++i) {
         dio->write(to_string(i+1) + ". " + this->commandsOptions[i]->getTitle() + "\n");
     }
