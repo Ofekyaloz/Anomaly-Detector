@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "cmake-build-debug/commands.h"
+#include "commands.h"
 #include "CLI.h"
 
 using namespace std;
