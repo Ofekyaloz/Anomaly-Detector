@@ -190,7 +190,7 @@ public:
         }
 
         float counterFP = info->reports.size() - counterTP;
-        dio->write("Upload complete.\n\"True Positive Rate: ");
+        dio->write("Upload complete.\nTrue Positive Rate: ");
         dio->write(((int)(1000 * counterTP / counterP))/1000.0);
         dio->write("\nFalse Positive Rate: ");
         dio->write(((int)(1000.0 * counterFP / (info->numberOfRows - sum)))/1000.0);;
