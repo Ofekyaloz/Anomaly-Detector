@@ -13,7 +13,7 @@ CLI::CLI(DefaultIO* dio) {
 
 void CLI::start(){
     CommandInfo info;
-    dio->write("Welcome to the Anomaly Detection Server. \nPlease choose an option:\n");
+    dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
     for (int i = 0; i < commandOptions.size(); ++i) {
         dio->write(to_string(i+1) + ". " + this->commandOptions[i]->getTitle() + "\n");
     }
