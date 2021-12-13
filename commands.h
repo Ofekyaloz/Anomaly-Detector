@@ -150,7 +150,7 @@ public:
     };
     virtual void execute(CommandInfo* info) override {
         for (AnomalyReport report: info->detects) {
-            dio->write(report.timeStep + "\t" + report.description + "\n");
+            dio->write(to_string(report.timeStep) + "\t" + report.description + "\n");
         }
         dio->write("Done.\n");
     }
@@ -165,7 +165,7 @@ public:
 
     bool isTruePossitive(int start, int end, vector<Report> reports) {
         for (Report report: reports) {
-            if ((report.startTime <= end && report.endTime <= end) || (start <= report.endTime && start <= report.startTime)) {
+            if ((report.startTime <= end && report.endTime >= start) || (report.startTime >= end && report.endTime <= start)) {
                 report.TP = true;
                 return true;
             }
@@ -190,8 +190,8 @@ public:
 
         float counterFP = info->detects.size() - counterTP;
         dio->write("Upload complete.\n");
-        dio->write("True Positive Rate: " + to_string(counterTP / counterP).substr(0,5) + "\n");
-        dio->write("False Positive Rate: " + to_string(counterFP / (info->numberOfRows - sum)).substr(0,5) + "\n");
+        dio->write("True Positive Rate: " + to_string((int)(1000 * counterTP / counterP)) + "\n");
+        dio->write("False Positive Rate: " + to_string((int)(1000 * counterFP / (info->numberOfRows - sum))) + "\n");
     }
 
 };

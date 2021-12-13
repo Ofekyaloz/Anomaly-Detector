@@ -64,7 +64,7 @@ void check(string outputFile,string expectedOutputFile){
         }else
         if(j<11 && i==chk[j]){
             if(lst.compare(lex)!=0){ // 88
-                cout<<"line "<<i<<" expected: "<<lex<<" you got "<<lst<<endl;
+                cout<<"line "<<i<<" expected: "<<lex<<" you got: "<<lst<<endl;
                 cout<<"wrong output (-8)"<<endl;
             }
             j++;
@@ -79,7 +79,7 @@ void check(string outputFile,string expectedOutputFile){
 
 //small test
 int main(){
-    STDtest std("/home/giligutfeld/CLionProjects/The_Best_Project/input.txt","output.txt");
+    STDtest std("/home/giligutfeld/CLionProjects/The_Best_Project/input.txt","/home/giligutfeld/CLionProjects/The_Best_Project/output.txt");
     CLI cli(&std);
     cli.start();
     std.close();
