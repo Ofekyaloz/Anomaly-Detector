@@ -127,15 +127,17 @@ public:
 //        r.endTime = 0;
 //        r.startTime = 0;
         r.TP = false;
+        int i = -1;
         for (AnomalyReport anomalyReport: info->detects) {
             if ((anomalyReport.timeStep != r.endTime + 1) && (anomalyReport.description != r.description)) {
                 r.startTime = anomalyReport.timeStep;
                 r.endTime = anomalyReport.timeStep;
                 r.description = anomalyReport.description;
                 info->reports.push_back(r);
+                i++;
                 continue;
             }
-            r.endTime++;
+            info->reports[i].endTime++;
         }
 
         dio->write("anomaly detection complete.\n");
