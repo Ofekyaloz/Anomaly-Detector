@@ -19,12 +19,12 @@ public:
     virtual void read(float* f)=0;
     virtual ~DefaultIO(){}
 
-
-    // read the csv information from a file and save the data in 'filename'.
+    // read the csv information from a file and save the data in 'fileName'.
     void readToFile(string fileName) {
         ofstream out(fileName);
         string data = "";
-
+        
+        // read every line from the client until we get the word 'done'
         while ((data = read()) != "done") {
             out << data << endl;
         }
@@ -32,7 +32,7 @@ public:
     }
 };
 
-// a Report is a union of AnomalyReport that presents in a row and with the same description.
+// Report is a struct of AnomalyReport that presents in a row and with the same description.
 struct Report {
     int startTime = 0;
     int endTime = 0;
@@ -40,7 +40,7 @@ struct Report {
     bool TP = false;
 };
 
-// The sharing information of the commands.
+// CommandInfo contains all the information the commands need to know and share between them
 struct CommandInfo {
     float threshold = 0.9;
     vector<AnomalyReport> detects;
@@ -48,11 +48,12 @@ struct CommandInfo {
     int numberOfRows = 0;
 };
 
-
+// Abstract interface which has execute function and DefaultIO and description fields
 class Command{
 protected:
     DefaultIO* dio;
     string description;
+    
 public:
     Command(DefaultIO* dio):dio(dio){}
     virtual void execute(CommandInfo* info)=0;
@@ -64,7 +65,7 @@ public:
     }
 };
 
-
+// A command that allows the client to upload its train and test csv
 class UploadCsv: public Command{
 public:
     UploadCsv(DefaultIO* dio): Command(dio) {
@@ -82,7 +83,7 @@ public:
     }
 };
 
-
+// A command that allows the client to change the threshold of the anomaly detector
 class ThresholdSettings: public Command{
 public:
     ThresholdSettings(DefaultIO* dio): Command(dio) {
@@ -107,6 +108,7 @@ public:
     }
 };
 
+// A command that allows the client to run the anomaly detector
 class RunDetect: public Command{
 public:
     RunDetect(DefaultIO* dio): Command(dio) {
@@ -143,6 +145,7 @@ public:
     }
 };
 
+// A command that allows the client to display the results of the detector
 class DisplayResults: public Command{
 public:
     DisplayResults(DefaultIO* dio): Command(dio) {
@@ -159,13 +162,14 @@ public:
 
 };
 
+// A command that allows the client to analyze the results
 class AnalyzeResults: public Command{
 public:
     AnalyzeResults(DefaultIO* dio): Command(dio) {
         this->description = "upload anomalies and analyze results\n";
     }
 
-    // check if two reports are TruePossitive.
+    // check if two reports are true positive
     bool isTruePossitive(int start, int end, vector<Report> reports) {
         for (Report report: reports) {
             if ((report.startTime <= end && report.endTime >= start) || (report.startTime >= end && report.endTime <= start)) {
@@ -181,6 +185,8 @@ public:
         dio->write("Please upload your local anomalies file.\n");
         string data = "";
         float counterTP = 0, counterP = 0, sum = 0;
+        
+        // Read the lines until the word 'done' and check if the lines are true positive
         while ((data = dio->read()) != "done") {
             size_t coma = data.find(",");
             int start = stoi(data.substr(0, coma));
@@ -188,10 +194,11 @@ public:
             if (isTruePossitive(start, end, info->reports)) {
                 counterTP++;
             }
-            sum+= end - start + 1;
+            sum += end - start + 1;
             counterP++;
         }
 
+        // Print the true positive rate and the false alarm rate
         float counterFP = info->reports.size() - counterTP;
         dio->write("Upload complete.\nTrue Positive Rate: ");
         dio->write(((int)(1000 * counterTP / counterP))/1000.0);
@@ -202,6 +209,7 @@ public:
 
 };
 
+// A command that allows the client to exit the simulator
 class Exit: public Command{
 public:
     Exit(DefaultIO* dio): Command(dio) {
