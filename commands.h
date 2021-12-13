@@ -127,17 +127,17 @@ public:
 //        r.endTime = 0;
 //        r.startTime = 0;
         r.TP = false;
-        int i = -1;
+
         for (AnomalyReport anomalyReport: info->detects) {
             if ((anomalyReport.timeStep != r.endTime + 1) && (anomalyReport.description != r.description)) {
                 r.startTime = anomalyReport.timeStep;
                 r.endTime = anomalyReport.timeStep;
                 r.description = anomalyReport.description;
                 info->reports.push_back(r);
-                i++;
+
                 continue;
             }
-            info->reports[i].endTime++;
+            info->reports.back().endTime++;
         }
 
         dio->write("anomaly detection complete.\n");
@@ -190,7 +190,7 @@ public:
             counterP++;
         }
 
-        float counterFP = info->detects.size() - counterTP;
+        float counterFP = info->reports.size() - counterTP;
         dio->write("Upload complete.\n");
         dio->write("True Positive Rate: " + to_string((int)(1000 * counterTP / counterP)) + "\n");
         dio->write("False Positive Rate: " + to_string((int)(1000 * counterFP / (info->numberOfRows - sum))) + "\n");
