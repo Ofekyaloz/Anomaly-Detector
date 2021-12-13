@@ -6,9 +6,9 @@
 
 using namespace std;
 
+// CLI - command line interface has default IO and vector of commands
 class CLI {
     DefaultIO* dio;
-    // you can add data members
     vector<Command*> commandOptions;
 public:
     CLI(DefaultIO* dio);
