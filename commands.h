@@ -19,8 +19,8 @@ public:
     virtual void read(float* f)=0;
     virtual ~DefaultIO(){}
 
-    // you may add additional methods here
 
+    // read the csv information from a file and save the data in 'filename'.
     void readToFile(string fileName) {
         ofstream out(fileName);
         string data = "";
@@ -30,10 +30,9 @@ public:
         }
         out.close();
     }
-
-
 };
 
+// a Report is a union of AnomalyReport that presents in a row and with the same description.
 struct Report {
     int startTime = 0;
     int endTime = 0;
@@ -41,6 +40,7 @@ struct Report {
     bool TP = false;
 };
 
+// The sharing information of the commands.
 struct CommandInfo {
     float threshold = 0.9;
     vector<AnomalyReport> detects;
@@ -49,10 +49,6 @@ struct CommandInfo {
 };
 
 
-// you may add here helper classes
-
-
-// you may edit this class
 class Command{
 protected:
     DefaultIO* dio;
@@ -61,19 +57,21 @@ public:
     Command(DefaultIO* dio):dio(dio){}
     virtual void execute(CommandInfo* info)=0;
     virtual ~Command(){}
+
+    // return the description of a command.
     string getTitle() {
         return this->description;
     }
 };
 
-// implement here your command classes
-class UploadCsv: public Command{
 
+class UploadCsv: public Command{
 public:
     UploadCsv(DefaultIO* dio): Command(dio) {
          this->description = "upload a time series csv file\n";
     };
 
+    // read two files, the train csv and the test csv.
     virtual void execute(CommandInfo* info) override {
         dio->write("Please upload your local train CSV file.\n");
         dio->readToFile("anomalyTrain.csv");
@@ -91,6 +89,7 @@ public:
         this->description = "algorithm settings\n";
     };
 
+    // update the threshold's value.
     virtual void execute(CommandInfo* info) override {
         while (1) {
             dio->write("The current correlation threshold is ");
@@ -113,6 +112,8 @@ public:
     RunDetect(DefaultIO* dio): Command(dio) {
         this->description = "detect anomalies\n";
     };
+
+    // Run the HybridAnomalyDetector with the value of threshold and with the train and test csv files.
     virtual void execute(CommandInfo* info) override {
         TimeSeries train("anomalyTrain.csv");
         TimeSeries test("anomalyTest.csv");
@@ -122,12 +123,9 @@ public:
         info->detects = detector.detect("anomalyTest.csv");
         info->numberOfRows = test.getColSize();
 
+        // union a few anomalyReport together if they are with the same description and in a row.
         Report r;
-//        r.description = "";
-//        r.endTime = 0;
-//        r.startTime = 0;
         r.TP = false;
-
         for (AnomalyReport anomalyReport: info->detects) {
             if ((anomalyReport.timeStep != r.endTime + 1) && (anomalyReport.description != r.description)) {
                 r.startTime = anomalyReport.timeStep;
@@ -136,6 +134,7 @@ public:
                 info->reports.push_back(r);
                 continue;
             }
+            // increment the endTime.
             info->reports.back().endTime++;
         }
 
@@ -149,6 +148,8 @@ public:
     DisplayResults(DefaultIO* dio): Command(dio) {
         this->description = "display results\n";
     };
+
+    // Print the timestep and the description of each report that we detected.
     virtual void execute(CommandInfo* info) override {
         for (AnomalyReport report: info->detects) {
             dio->write(to_string(report.timeStep) + "\t" + report.description + "\n");
@@ -164,6 +165,7 @@ public:
         this->description = "upload anomalies and analyze results\n";
     }
 
+    // check if two reports are TruePossitive.
     bool isTruePossitive(int start, int end, vector<Report> reports) {
         for (Report report: reports) {
             if ((report.startTime <= end && report.endTime >= start) || (report.startTime >= end && report.endTime <= start)) {
@@ -174,6 +176,7 @@ public:
         return false;
     }
 
+    // Analyze the results and display them.
     virtual void execute(CommandInfo* info) override {
         dio->write("Please upload your local anomalies file.\n");
         string data = "";
@@ -204,6 +207,7 @@ public:
     Exit(DefaultIO* dio): Command(dio) {
         this->description = "exit\n";
     };
+
     virtual void execute(CommandInfo* info) override {
         return;
     }
