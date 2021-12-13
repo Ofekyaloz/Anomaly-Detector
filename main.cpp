@@ -83,7 +83,7 @@ int main(){
     CLI cli(&std);
     cli.start();
     std.close();
-    check("output.txt","expectedOutput.txt");
+    check("output.txt","/home/giligutfeld/CLionProjects/The_Best_Project/expectedOutput.txt");
     cout<<"done"<<endl;
     return 0;
 }
