@@ -177,7 +177,7 @@ public:
         dio->write("Please upload your local anomalies file.\n");
         string data = "";
         float counterTP = 0, counterP = 0, sum = 0;
-        while ((data = dio->read()) != "Done.") {
+        while ((data = dio->read()) != "done") {
             size_t coma = data.find(",");
             int start = stoi(data.substr(0, coma));
             int end = stoi(data.substr( coma + 1, data.length()));
@@ -199,7 +199,7 @@ public:
 class Exit: public Command{
 public:
     Exit(DefaultIO* dio): Command(dio) {
-        this->description = "exit";
+        this->description = "exit\n";
     };
     virtual void execute(CommandInfo* info) override {
         return;
