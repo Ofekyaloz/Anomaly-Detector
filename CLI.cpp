@@ -1,6 +1,7 @@
 #include "CLI.h"
 #include "commands.h"
 
+// command line interface where the commands are introduced
 CLI::CLI(DefaultIO* dio) {
     this->dio = dio;
     this->commandOptions.push_back(new UploadCsv(dio));
@@ -11,6 +12,7 @@ CLI::CLI(DefaultIO* dio) {
     this->commandOptions.push_back(new Exit(dio));
 }
 
+// start the CLI by introduce the options to the client
 void CLI::start() {
     CommandInfo info;
     int choice = 0;
@@ -26,7 +28,7 @@ void CLI::start() {
     }
 }
 
-
+// destructor
 CLI::~CLI() {
     for (int i = 0; i < commandOptions.size(); i++) {
         delete commandOptions[i];
