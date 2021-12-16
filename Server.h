@@ -7,8 +7,13 @@
 
 #include "commands.h"
 #include <thread>
+#include <pthread.h>
 #include <netinet/in.h>
 #include "CLI.h"
+#include <signal.h>
+#include "sys/socket.h"
+#include <unistd.h>
+#include <sstream>
 
 using namespace std;
 
