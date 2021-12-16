@@ -10,7 +10,6 @@
 #include <pthread.h>
 #include <netinet/in.h>
 #include "CLI.h"
-#include <signal.h>
 #include "sys/socket.h"
 #include <unistd.h>
 #include <sstream>
@@ -22,9 +21,6 @@ class ClientHandler{
     public:
     virtual void handle(int clientID)=0;
 };
-
-
-// you can add helper classes here and implement on the cpp file
 
 class socketIO:public DefaultIO{
     int clientID;

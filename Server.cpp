@@ -19,18 +19,13 @@ Server::Server(int port)throw (const char*) {
         throw "bind failure";
 
     // listen to four clients or less
-    if (listen(socketID, 4) < 0)
+    if (listen(socketID, 5) < 0)
         throw "listen failure";
-}
-
-void sigHandler(int sigNum){
-    cout<<"sidH"<<endl;
 }
 
 void Server::start(ClientHandler& ch)throw(const char*) {
     t = new thread([&ch, this]() {
 
-        signal(SIGALRM,sigHandler);
         // run the server while the shouldStop member is false (until call the stop function)
         while (!shouldStop) {
 
