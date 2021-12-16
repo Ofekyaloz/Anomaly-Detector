@@ -11,19 +11,19 @@
 
 using namespace std;
 
-class DefaultIO{
+class DefaultIO {
 public:
-    virtual string read()=0;
-    virtual void write(string text)=0;
-    virtual void write(float f)=0;
-    virtual void read(float* f)=0;
-    virtual ~DefaultIO(){}
+    virtual string read() = 0;
+    virtual void write(string text) = 0;
+    virtual void write(float f) = 0;
+    virtual void read(float *f) = 0;
+    virtual ~DefaultIO() {}
 
     // read the csv information from a file and save the data in 'fileName'.
     void readToFile(string fileName) {
         ofstream out(fileName);
         string data = "";
-        
+
         // read every line from the client until we get the word 'done'
         while ((data = read()) != "done") {
             out << data << endl;
@@ -92,7 +92,7 @@ public:
 
     // update the threshold's value.
     virtual void execute(CommandInfo* info) override {
-        while (1) {
+        while (true) {
             dio->write("The current correlation threshold is ");
             dio->write(info->threshold);
             dio->write("\nPlease Enter threshold value: \n");

@@ -1,13 +1,14 @@
 /*
- * Server.h
- *
- *  Created on: Dec 13, 2020
- *      Author: Eli
+ * Authors: Gili Gutfeld & Ofek Yaloz
  */
 
 #ifndef SERVER_H_
 #define SERVER_H_
 
+#include "commands.h"
+#include <thread>
+#include <netinet/in.h>
+#include "CLI.h"
 
 using namespace std;
 
@@ -20,27 +21,40 @@ class ClientHandler{
 
 // you can add helper classes here and implement on the cpp file
 
+class socketIO:public DefaultIO{
+    int clientID;
+public:
+    socketIO(int clientID):clientID(clientID){}
+    virtual string read();
+    virtual void read(float *f);
+    virtual void write(string text);
+    virtual void write(float f);
+};
 
 // edit your AnomalyDetectionHandler class here
-class AnomalyDetectionHandler:public ClientHandler{
-	public:
-    virtual void handle(int clientID){
-
+class AnomalyDetectionHandler:public ClientHandler {
+public:
+    virtual void handle(int clientID) {
+        socketIO sock(clientID);
+        CLI cli(&sock);
+        cli.start();
     }
 };
 
 
 // implement on Server.cpp
 class Server {
-	thread* t; // the thread to run the start() method in
-
-	// you may add data members
+    thread *t; // the thread to run the start() method in
+    int socketID;
+    sockaddr_in server;
+    sockaddr_in client;
+    volatile bool shouldStop;
 
 public:
-	Server(int port) throw (const char*);
-	virtual ~Server();
-	void start(ClientHandler& ch)throw(const char*);
-	void stop();
+    Server(int port) throw(const char *);
+    virtual ~Server();
+    void start(ClientHandler &ch) throw(const char *);
+    void stop();
 };
 
 #endif /* SERVER_H_ */
