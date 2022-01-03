@@ -27,7 +27,6 @@ public:
         // read every line from the client until we get the word 'done'
         while ((data = read()) != "done\n") {
             out << data << endl;
-            cout << data << endl;
         }
         out.close();
     }

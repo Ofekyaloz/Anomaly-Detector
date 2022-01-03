@@ -174,8 +174,8 @@ int main(){
     }catch(const char* s){
         cout<<s<<endl;
     }
-    size_t mistakes = check(outputFile1,"expected_output_menu.txt");
-    mistakes += check(outputFile2,"expected_output.txt");
+    size_t mistakes = check(outputFile1,"/home/ofek/CLionProjects/The_Best_Project/expected_output_menu.txt");
+    mistakes += check(outputFile2,"/home/ofek/CLionProjects/The_Best_Project/expected_output.txt");
 
     if(mistakes>0)
         cout<<"you have "<<mistakes<<" mistakes in your output (-"<<(mistakes*2)<<")"<<endl;
