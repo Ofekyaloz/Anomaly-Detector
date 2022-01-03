@@ -24,23 +24,17 @@ Server::Server(int port)throw (const char*) {
         throw "listen failure";
 }
 
-void sigHandler(int sigNum){
-    cout<<"sidH"<<endl;
-}
-
 void Server::start(ClientHandler& ch)throw(const char*) {
     t = new thread([&ch, this]() {
-        signal(SIGALRM, sigHandler);
         // run the server while the shouldStop member is false (until call the stop function)
         while (!shouldStop) {
             alarm(1);
-
             // accept a new client and handle him
             socklen_t size = sizeof(client);
+
             int clientAccepted = accept(socketID, (struct sockaddr *) &client, &size);
             if (clientAccepted > 0) {
                 ch.handle(clientAccepted);
-
                 close(clientAccepted);
             }
             alarm(0);
@@ -57,8 +51,9 @@ void Server::stop() {
 	t->join();
 }
 
+// destructor
 Server::~Server() {
-//    delete[] this->t;
+
 }
 
 // read the text
