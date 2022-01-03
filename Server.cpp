@@ -1,4 +1,7 @@
-
+/*
+ * Authors: Gili Gutfeld - 209284512
+ * Ofek Yaloz - 206666729
+ */
 #include "Server.h"
 
 
