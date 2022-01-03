@@ -1,8 +1,6 @@
 
 #include "Server.h"
-#include "sys/socket.h"
-#include <unistd.h>
-#include <sstream>
+
 
 Server::Server(int port)throw (const char*) {
     // create new socket in tcp protocol and ipv4
@@ -26,9 +24,13 @@ Server::Server(int port)throw (const char*) {
         throw "listen failure";
 }
 
+void sigHandler(int sigNum){
+    cout<<"sidH"<<endl;
+}
+
 void Server::start(ClientHandler& ch)throw(const char*) {
     t = new thread([&ch, this]() {
-
+        signal(SIGALRM, sigHandler);
         // run the server while the shouldStop member is false (until call the stop function)
         while (!shouldStop) {
             alarm(1);
@@ -38,8 +40,10 @@ void Server::start(ClientHandler& ch)throw(const char*) {
             int clientAccepted = accept(socketID, (struct sockaddr *) &client, &size);
             if (clientAccepted > 0) {
                 ch.handle(clientAccepted);
+
                 close(clientAccepted);
             }
+            alarm(0);
         }
 
         // close the socket
@@ -54,7 +58,7 @@ void Server::stop() {
 }
 
 Server::~Server() {
-
+//    delete[] this->t;
 }
 
 // read the text

@@ -25,8 +25,9 @@ public:
         string data = "";
 
         // read every line from the client until we get the word 'done'
-        while ((data = read()) != "done") {
+        while ((data = read()) != "done\n") {
             out << data << endl;
+            cout << data << endl;
         }
         out.close();
     }
@@ -187,7 +188,7 @@ public:
         float counterTP = 0, counterP = 0, sum = 0;
         
         // Read the lines until the word 'done' and check if the lines are true positive
-        while ((data = dio->read()) != "done") {
+        while ((data = dio->read()) != "done\n") {
             size_t coma = data.find(",");
             int start = stoi(data.substr(0, coma));
             int end = stoi(data.substr( coma + 1, data.length()));

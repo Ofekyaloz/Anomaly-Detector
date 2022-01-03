@@ -5,9 +5,21 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
-#include "commands.h"
+
+#include <iostream>
+#include <sys/socket.h>  // The header file socket.h includes a number of definitions of structures needed for sockets.
+#include <netinet/in.h>  // The header file in.h contains constants and structures needed for internet domain addresses.
+
+#include <pthread.h>
 #include <thread>
-#include <netinet/in.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include<signal.h>
+#include <sstream>
+
 #include "CLI.h"
 
 using namespace std;
@@ -44,7 +56,7 @@ public:
 
 // implement on Server.cpp
 class Server {
-    thread *t; // the thread to run the start() method in
+    std::thread* t; // the thread to run the start() method in
     int socketID;
     sockaddr_in server;
     sockaddr_in client;
@@ -55,6 +67,7 @@ public:
     virtual ~Server();
     void start(ClientHandler &ch) throw(const char *);
     void stop();
+    void run(ClientHandler &ch);
 };
 
 #endif /* SERVER_H_ */

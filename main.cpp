@@ -92,7 +92,7 @@ void clientSide2(int port,string outputFile)throw (const char*){
     int serverFD = initClient(port);
 
     ofstream out(outputFile);
-    ifstream in("input.txt");
+    ifstream in("/home/ofek/CLionProjects/The_Best_Project/input.txt");
     string input="";
     while(input!="6"){
         readMenue(out,serverFD);
@@ -104,7 +104,7 @@ void clientSide2(int port,string outputFile)throw (const char*){
                 getline(in,input);
                 writeStr(input,serverFD);
             }
-            out<<readStr(serverFD)<<endl; // Upload complete
+            out<<readStr(serverFD)<<endl; // Upload complete ///////////////////////////////////////
             out<<readStr(serverFD)<<endl; // please upload...
             input="";
             while(input!="done"){
