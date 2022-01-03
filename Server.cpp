@@ -51,7 +51,7 @@ void Server::start(ClientHandler& ch)throw(const char*) {
 // update the stop member to close the server
 void Server::stop() {
     shouldStop = true;
-//	t->join();
+ 	t->join();
 }
 
 // destructor
